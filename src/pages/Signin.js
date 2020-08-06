@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import SigninForm from "../components/SigninForm";
+import store from "../redux/store";
+import { loginUser } from "../redux/actions/userActions";
+import { withFirebase } from "../components/Firebase";
 
-const Signin = () => {
+const Signin = (props) => {
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -13,10 +16,13 @@ const Signin = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(state);
-  };
+    const user = {
+      email: state.email,
+      password: state.password,
+    };
 
-  console.log(state);
+    store.dispatch(loginUser(user, props.history, props.firebase));
+  };
 
   return (
     <div>
@@ -29,4 +35,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default withFirebase(Signin);

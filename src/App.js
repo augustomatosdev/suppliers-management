@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Signin from "./pages/Signin";
 import Home from "./pages/Home";
+import { getAuthUser } from "./redux/actions/userActions";
+import { withFirebase } from "./components/Firebase";
+import store from "./redux/store";
+import { SET_AUTHENTICATED } from "./redux/types";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import UnAuthRoute from "./utils/UnAuthRoute";
+import Signup from "./pages/Signup";
+import Contracts from "./pages/Contracts";
+import Suppliers from "./pages/Suppliers";
+import Products from "./pages/Products";
+import NewSupplier from "./pages/NewSupplier";
 
 //MUi Theme settings
 const theme = createMuiTheme({
@@ -31,17 +40,33 @@ const theme = createMuiTheme({
   },
 });
 
-function App() {
+function App(props) {
+  useEffect(() => {
+    props.firebase.auth.onAuthStateChanged((user) => {
+      if (user) {
+        store.dispatch({ type: SET_AUTHENTICATED });
+        store.dispatch(getAuthUser(props.firebase, user));
+      } else {
+        console.log("No user");
+        // store.dispatch(logoutUser(props.firebase));
+      }
+    });
+  }, []);
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Switch>
           <UnAuthRoute exact path="/" component={Home} />
+          <UnAuthRoute exact path="/contracts" component={Contracts} />
+          <UnAuthRoute exact path="/suppliers" component={Suppliers} />
+          <UnAuthRoute exact path="/products" component={Products} />
+          <UnAuthRoute exact path="/suppliers/new" component={NewSupplier} />
           <Route exact path="/signin" component={Signin} />
+          <Route exact path="/signup-user" component={Signup} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>
   );
 }
 
-export default App;
+export default withFirebase(App);

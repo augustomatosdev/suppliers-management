@@ -11,7 +11,7 @@ import { validateSignupData, validateLoginData } from "../../utils/validators";
 import { config } from "../../components/Firebase/config";
 import store from "../store";
 
-export const signupUser = (newUserData, firebase) => (dispatch) => {
+export const signupUser = (newUserData, firebase, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
 
   firebase.auth
@@ -22,18 +22,18 @@ export const signupUser = (newUserData, firebase) => (dispatch) => {
     .then((userId) => {
       const userCredentials = {
         displayName: newUserData.displayName,
-        userName: newUserData.userName,
         email: newUserData.email,
         createdAt: new Date().toISOString(),
         userId,
         job: newUserData.job,
         permission: newUserData.permission,
+        password: newUserData.password,
       };
-      return firebase.db.doc(`/users`).set(userCredentials);
+      return firebase.db.collection("/users").add(userCredentials);
     })
-    .then(() => {
-      // dispatch(getUserData())
-      return alert("Novo usuario cadastrado com sucesso!");
+    .then((data) => {
+      alert("Novo usuario cadastrado com sucesso!");
+      history.push("/system/users");
     })
     .catch((err) => {
       if (err.code === "auth/email-already-in-use") {
@@ -42,6 +42,7 @@ export const signupUser = (newUserData, firebase) => (dispatch) => {
           payload: { email: "Este email ja foi cadastrado!" },
         });
       } else {
+        console.log(err);
         return store.dispatch({
           type: SET_ERRORS,
           payload: { general: "Ocorreu um erro, tente novamente" },
@@ -81,7 +82,6 @@ export const getAuthUser = (firebase, user) => (dispatch) => {
   let userData = {};
 
   if (user) {
-    userData.emailVerified = user.emailVerified;
     firebase.db
       .collection("users")
       .where("userId", "==", user.uid)
@@ -95,30 +95,6 @@ export const getAuthUser = (firebase, user) => (dispatch) => {
           .get();
       })
       .then((data) => {
-        userData.likes = [];
-        data.forEach((doc) => {
-          userData.likes.push(doc.data());
-        });
-        return firebase.db
-          .collection("notifications")
-          .where("recipientId", "==", user.uid)
-          .orderBy("createdAt", "desc")
-          .limit(10)
-          .get();
-      })
-      .then((data) => {
-        userData.notifications = [];
-        data.forEach((doc) => {
-          userData.notifications.push({
-            recipient: doc.data().recipient,
-            sender: doc.data().sender,
-            createdAt: doc.data().createdAt,
-            screamId: doc.data().screamId,
-            type: doc.data().type,
-            read: doc.data().read,
-            notificationId: doc.id,
-          });
-        });
         dispatch({
           type: SET_USER,
           payload: userData,

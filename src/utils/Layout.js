@@ -18,6 +18,11 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import HomeIcon from "@material-ui/icons/HomeRounded";
+import ProductsIcon from "@material-ui/icons/LocalGroceryStoreRounded";
+import BusinessIcon from "@material-ui/icons/BusinessCenter";
 
 const drawerWidth = 240;
 
@@ -85,6 +90,7 @@ export default function Layout(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const user = useSelector((state) => state.user.credentials);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -114,7 +120,7 @@ export default function Layout(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Bem vindo (a) USUARIO
+            Bem vindo(a) {user.displayName}
           </Typography>
           <Button color="inherit">Sair</Button>
         </Toolbar>
@@ -139,15 +145,34 @@ export default function Layout(props) {
         </div>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button component={Link} to="/">
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Inicio" />
+          </ListItem>
+          <ListItem button component={Link} to="/products">
+            <ListItemIcon>
+              <ProductsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Produto/Serviço" />
+          </ListItem>
+          <ListItem button component={Link} to="/suppliers">
+            <ListItemIcon>
+              <BusinessIcon />
+            </ListItemIcon>
+            <ListItemText primary="Fornecedores" />
+          </ListItem>
+          <ListItem button component={Link} to="/contracts">
+            <ListItemIcon>
+              <span class="icon">
+                <i class="fas fa-lg fa-file-contract"></i>
+              </span>
+            </ListItemIcon>
+            <ListItemText primary="Contratos" />
+          </ListItem>
         </List>
+
         <Divider />
         <List>
           {["All mail", "Trash", "Spam"].map((text, index) => (
@@ -165,6 +190,7 @@ export default function Layout(props) {
           [classes.contentShift]: open,
         })}
       >
+        <div className={classes.drawerHeader} />
         {props.children}
       </main>
     </div>

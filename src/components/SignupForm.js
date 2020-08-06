@@ -1,10 +1,11 @@
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -46,9 +47,13 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
 }));
 
-export default function SigninForm({ state, handleChange, handleSubmit }) {
+export default function SignupForm({ state, handleChange, handleSubmit }) {
   const classes = useStyles();
   const errors = useSelector((state) => state.UI.errors);
 
@@ -70,11 +75,35 @@ export default function SigninForm({ state, handleChange, handleSubmit }) {
             margin="normal"
             required
             fullWidth
+            id="displayName"
+            label="Nome completo"
+            name="displayName"
+            autoComplete="displayName"
+            autoFocus
+            onChange={handleChange}
+            value={state.displayName}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="job"
+            label="Cargo/Função"
+            name="job"
+            autoComplete="job"
+            onChange={handleChange}
+            value={state.job}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
             id="email"
             label="Email"
             name="email"
             autoComplete="email"
-            autoFocus
             onChange={handleChange}
             value={state.email}
             error={errors.email && true}
@@ -94,6 +123,20 @@ export default function SigninForm({ state, handleChange, handleSubmit }) {
             onChange={handleChange}
             value={state.password}
           />
+          <FormControl className={classes.formControl}>
+            <InputLabel id="demo-simple-select-label">Permissão</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="permission"
+              name="permission"
+              onChange={handleChange}
+              fullWidth
+              value={state.permission}
+            >
+              <MenuItem value={1}>Nivel 1</MenuItem>
+              <MenuItem value={2}>Nivel 2</MenuItem>
+            </Select>
+          </FormControl>
           <p className="has-text-danger is-size-7">
             {errors.general && errors.general}
           </p>
@@ -105,15 +148,8 @@ export default function SigninForm({ state, handleChange, handleSubmit }) {
             color="primary"
             className={classes.submit}
           >
-            Entrar
+            Cadastrar
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Esqueceu-se dos dados de acesso?
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       <Box mt={8}>

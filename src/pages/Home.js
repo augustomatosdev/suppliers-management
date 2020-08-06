@@ -1,16 +1,10 @@
 import React from "react";
+import DashInfo from "../components/DashInfo";
 
 const Home = () => {
   return (
     <div>
-      <h1>This is home</h1>
-      <p>Lorem ipsun</p>
-      <h1>This is home</h1>
-      <p>Lorem ipsun</p>
-      <h1>This is home</h1>
-      <p>Lorem ipsun</p>
-      <h1>This is home</h1>
-      <p>Lorem ipsun</p>
+      <DashInfo />
     </div>
   );
 };

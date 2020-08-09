@@ -22,12 +22,14 @@ const NewSupplier = (props) => {
       email: "",
     },
     startDate: "",
-    obs: "",
+    // obs: "",
     manager: {
       fullName: "",
       phone: "",
       idCard: "",
     },
+    type: "",
+    description: "",
   });
 
   const handleChange = (e) => {
@@ -54,7 +56,7 @@ const NewSupplier = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    store.dispatch(postSupplier(props.firebase, state));
+    store.dispatch(postSupplier(props.firebase, state, props.history));
   };
 
   return (

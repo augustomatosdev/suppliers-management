@@ -10,3 +10,9 @@ export const SET_ERRORS = "SET_ERRORS";
 export const STOP_LOADING_UI = "STOP_LOADING_UI";
 export const POST_PRODUCT = "POST_PRODUCT";
 export const POST_SUPPLIER = "POST_SUPPLIER";
+export const SET_SUPPLIERS = "SET_SUPPLIERS";
+
+//******Events types */
+export const POST_EVENT = "POST_EVENT";
+export const SET_EVENTS = "SET_EVENTS";
+export const DELETE_EVENT = "DELETE_EVENT";

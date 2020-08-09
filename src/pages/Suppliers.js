@@ -1,24 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Level from "../components/Level";
 import SuppliersTable from "../components/SuppliersTable";
+import { useSelector } from "react-redux";
+import store from "../redux/store";
+import { getAllSuppliers } from "../redux/actions/dataActions";
+import { withFirebase } from "../components/Firebase";
 
-const Suppliers = () => {
+const Suppliers = (props) => {
+  const suppliers = useSelector((state) => state.data.suppliers);
+  console.log(suppliers);
+
+  useEffect(() => {
+    if (suppliers.length === 0) {
+      store.dispatch(getAllSuppliers(props.firebase));
+    }
+  }, []);
+
   return (
     <div>
       <Level />
       <div className="columns is-centered">
-        <div className="column is-8">
+        <div className="column">
           <h1 className="title has-text-centered">
             LISTA DE FORNECEDORES CADASTRADOS
           </h1>
-          <SuppliersTable />
-        </div>
-        <div className="column is-2">
-          <h1 className="subtitle has-text-centered">INSTRUÇÕES</h1>
+          <SuppliersTable data={suppliers} />
         </div>
       </div>
     </div>
   );
 };
 
-export default Suppliers;
+export default withFirebase(Suppliers);

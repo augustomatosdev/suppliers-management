@@ -15,6 +15,7 @@ import Suppliers from "./pages/Suppliers";
 import Products from "./pages/Products";
 import NewSupplier from "./pages/NewSupplier";
 import NewProduct from "./pages/NewProduct";
+import AuthRoute from "./utils/AuthRoute";
 
 //MUi Theme settings
 const theme = createMuiTheme({
@@ -53,6 +54,7 @@ function App(props) {
       }
     });
   }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
@@ -63,8 +65,8 @@ function App(props) {
           <UnAuthRoute exact path="/products" component={Products} />
           <UnAuthRoute exact path="/products/new" component={NewProduct} />
           <UnAuthRoute exact path="/suppliers/new" component={NewSupplier} />
-          <Route exact path="/signin" component={Signin} />
-          <Route exact path="/signup-user" component={Signup} />
+          <UnAuthRoute exact path="/signup-user" component={Signup} />
+          <AuthRoute exact path="/signin" component={Signin} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>

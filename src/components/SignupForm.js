@@ -61,7 +61,7 @@ export default function SignupForm({ state, handleChange, handleSubmit }) {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <figure class="image is-64x64">
+        <figure className="image is-64x64">
           <img style={{ maxHeight: "100%" }} src={Logo} />
         </figure>
         <h1 className="subtitle has-text-centered is-size-7 is-marginless">

@@ -7,16 +7,16 @@ const AddProduct = ({ state, handleChange, handleSubmit }) => {
   const isLoading = useSelector((state) => state.UI.loading);
   return (
     <form onSubmit={handleSubmit}>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Nome</label>
+      <div className="field is-horizontal">
+        <div className="field-label is-normal">
+          <label className="label">Nome</label>
         </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
+        <div className="field-body">
+          <div className="field">
+            <div className="control">
               <input
                 name="name"
-                class="input"
+                className="input"
                 type="text"
                 placeholder="Nome do produto ou serviço"
                 value={state.name}
@@ -26,13 +26,13 @@ const AddProduct = ({ state, handleChange, handleSubmit }) => {
           </div>
         </div>
       </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Tipo</label>
+      <div className="field is-horizontal">
+        <div className="field-label is-normal">
+          <label className="label">Tipo</label>
         </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
+        <div className="field-body">
+          <div className="field">
+            <div className="control">
               <div className="select">
                 <select onChange={handleChange} value={state.type} name="type">
                   <option value="">Seleccione</option>
@@ -44,22 +44,24 @@ const AddProduct = ({ state, handleChange, handleSubmit }) => {
           </div>
         </div>
       </div>
-      <div class="field is-horizontal">
-        <div class="field-label">{/* <!-- Left empty for spacing --> */}</div>
-        <div class="field-body">
-          <div class="field is-grouped">
-            <div class="control">
+      <div className="field is-horizontal">
+        <div className="field-label">
+          {/* <!-- Left empty for spacing --> */}
+        </div>
+        <div className="field-body">
+          <div className="field is-grouped">
+            <div className="control">
               <button
                 disabled={isDisabled}
-                class={
+                className={
                   isLoading ? "button is-link is-loading" : "button is-link"
                 }
               >
                 Cadastrar
               </button>
             </div>
-            <div class="control">
-              <Link to="/products" class="button is-danger">
+            <div className="control">
+              <Link to="/products" className="button is-danger">
                 Cancelar
               </Link>
             </div>

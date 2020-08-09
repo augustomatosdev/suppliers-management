@@ -4,9 +4,11 @@ import {
   CLEAR_ERRORS,
   LOADING_UI,
   POST_SUPPLIER,
+  SET_SUPPLIERS,
   LOADING_USER,
   MARK_NOTIFICATIONS_READ,
   SET_UPLOAD_FILE,
+  LOADING_DATA,
 } from "../types";
 
 // ***************Products and services actions********************
@@ -34,7 +36,7 @@ export const postProduct_Service = (firebase, newProduct) => (dispatch) => {
 };
 
 //********************SUPPLIERS ACTIONS *******************/
-export const postSupplier = (firebase, newSupplier) => (dispatch) => {
+export const postSupplier = (firebase, newSupplier, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   firebase.db
     .collection("suppliers")
@@ -48,6 +50,35 @@ export const postSupplier = (firebase, newSupplier) => (dispatch) => {
       });
       dispatch(clearErrors());
       alert("Fornecedor cadastrado com sucesso");
+      history.push(`/suppliers`);
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err,
+      });
+    });
+};
+
+export const getAllSuppliers = (firebase) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  firebase.db
+    .collection("suppliers")
+    .orderBy("name", "asc")
+    .get()
+    .then((data) => {
+      let suppliers = [];
+      data.forEach((doc) => {
+        suppliers.push({
+          ...doc.data(),
+          supplierId: doc.id,
+        });
+      });
+      dispatch({
+        type: SET_SUPPLIERS,
+        payload: suppliers,
+      });
     })
     .catch((err) => {
       console.log(err);

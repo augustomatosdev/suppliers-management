@@ -37,7 +37,7 @@ const Signup = (props) => {
         <div className="column is-4">
           <div className="section">
             <h1 className="title has-text-centered">Informações</h1>
-            <div class="content">
+            <div className="content">
               <ol type="1">
                 <li>
                   Para cadastrar um novo usuário preencha atenciosamente o

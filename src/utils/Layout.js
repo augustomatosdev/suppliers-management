@@ -23,6 +23,9 @@ import { Link } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/HomeRounded";
 import ProductsIcon from "@material-ui/icons/LocalGroceryStoreRounded";
 import BusinessIcon from "@material-ui/icons/BusinessCenter";
+import store from "../redux/store";
+import { logoutUser } from "../redux/actions/userActions";
+import { withFirebase } from "../components/Firebase";
 
 const drawerWidth = 240;
 
@@ -86,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Layout(props) {
+const Layout = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -122,7 +125,12 @@ export default function Layout(props) {
           <Typography variant="h6" className={classes.title}>
             Bem vindo(a) {user.displayName}
           </Typography>
-          <Button color="inherit">Sair</Button>
+          <Button
+            onClick={() => store.dispatch(logoutUser(props.firebase))}
+            color="inherit"
+          >
+            Sair
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -151,12 +159,12 @@ export default function Layout(props) {
             </ListItemIcon>
             <ListItemText primary="Inicio" />
           </ListItem>
-          <ListItem button component={Link} to="/products">
+          {/* <ListItem button component={Link} to="/products">
             <ListItemIcon>
               <ProductsIcon />
             </ListItemIcon>
             <ListItemText primary="Produto/Serviço" />
-          </ListItem>
+          </ListItem> */}
           <ListItem button component={Link} to="/suppliers">
             <ListItemIcon>
               <BusinessIcon />
@@ -165,8 +173,8 @@ export default function Layout(props) {
           </ListItem>
           <ListItem button component={Link} to="/contracts">
             <ListItemIcon>
-              <span class="icon">
-                <i class="fas fa-lg fa-file-contract"></i>
+              <span className="icon">
+                <i className="fas fa-lg fa-file-contract"></i>
               </span>
             </ListItemIcon>
             <ListItemText primary="Contratos" />
@@ -175,14 +183,14 @@ export default function Layout(props) {
 
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button component={Link} to="/signup-user">
+            <ListItemIcon>
+              <span className="icon">
+                <i className="fas fa-lg fa-users"></i>
+              </span>
+            </ListItemIcon>
+            <ListItemText primary="Usuarios" />
+          </ListItem>
         </List>
       </Drawer>
       <main
@@ -195,4 +203,6 @@ export default function Layout(props) {
       </main>
     </div>
   );
-}
+};
+
+export default withFirebase(Layout);

@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 import Layout from "./Layout";
 
 const UnAuthRoute = ({ component: Component, ...rest }) => {
-  const authenticated = true;
+  const authenticated = useSelector((state) => state.user.authenticated);
+  console.log(authenticated);
 
   return (
     <Route

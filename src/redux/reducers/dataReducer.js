@@ -1,9 +1,8 @@
-import { LOADING_DATA, SET_UPLOAD_FILE } from "../types";
-import { size } from "lodash";
+import { LOADING_DATA, POST_PRODUCT, POST_SUPPLIER } from "../types";
 
 const initialState = {
-  screams: [],
-  scream: {},
+  products: [],
+  suppliers: [],
   loading: false,
 };
 
@@ -13,6 +12,17 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: true,
+      };
+
+    case POST_PRODUCT:
+      return {
+        ...state,
+        products: [action.payload, ...state.products],
+      };
+    case POST_SUPPLIER:
+      return {
+        ...state,
+        suppliers: [action.payload, ...state.suppliers],
       };
 
     default:

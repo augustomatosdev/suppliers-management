@@ -2,8 +2,9 @@ import React from "react";
 import MUIDataTable from "mui-datatables";
 
 const columns = [
+  { name: "Nº" },
   {
-    name: "Nome",
+    name: "Empresa",
     options: {
       filter: false,
       customBodyRender: (value, tableMeta, updateValue) => {
@@ -11,21 +12,26 @@ const columns = [
       },
     },
   },
-  { name: "NIF" },
-  { name: "Endereço" },
-  { name: "Contactos" },
-  { name: "Email" },
-  { name: "Responsável" },
-  { name: "Inicio" },
-  { name: "Produto/Serviço" },
-  ,
+  { name: "Objecto" },
+  { name: "Valor" },
+  { name: "Data" },
+  { name: "Estado" },
+  {
+    name: "Anexos",
+    options: {
+      filter: false,
+      customBodyRender: (value, tableMeta, updateValue) => {
+        return <a href={value}>{"Baixar"}</a>;
+      },
+    },
+  },
 ];
 
 const options = {
   filterType: "checkbox",
   textLabels: {
     body: {
-      noMatch: "A pesquisa não encontrou fornecedores",
+      noMatch: "A pesquisa não encontrou contratos",
       toolTip: "Ordenar",
       columnHeaderTooltip: (column) => `Ordenar por ${column.label}`,
     },
@@ -59,30 +65,30 @@ const options = {
   },
 };
 
-const SuppliersTable = ({ data }) => {
-  const newArray = data.map((supplier) => {
-    return {
-      Nome: supplier.name,
-      NIF: supplier.nif,
-      Endereço: `${supplier.address.street}, ${supplier.address.municipalty}, ${supplier.address.province}`,
-      Contactos: `${supplier.contacts.phone1}, ${supplier.contacts.phone2}`,
-      Email: supplier.contacts.email,
-      Responsável: supplier.manager.fullName,
-      Inicio: supplier.startDate,
-      // Oservações: supplier.obs,
-      "Produto/Serviço": supplier.description,
-      type: supplier.type,
-    };
-  });
+const ContractsTable = ({ data }) => {
+  //   const newArray = data.map((supplier) => {
+  //     return {
+  //       Nome: supplier.name,
+  //       NIF: supplier.nif,
+  //       Endereço: `${supplier.address.street}, ${supplier.address.municipalty}, ${supplier.address.province}`,
+  //       Contactos: `${supplier.contacts.phone1}, ${supplier.contacts.phone2}`,
+  //       Email: supplier.contacts.email,
+  //       Responsável: supplier.manager.fullName,
+  //       Inicio: supplier.startDate,
+  //       // Oservações: supplier.obs,
+  //       "Produto/Serviço": supplier.description,
+  //       type: supplier.type,
+  //     };
+  //   });
 
   return (
     <MUIDataTable
-      // title={"Employee List"}
-      data={newArray}
+      title={"Lista de contratos"}
+      data={data}
       columns={columns}
       options={options}
     />
   );
 };
 
-export default SuppliersTable;
+export default ContractsTable;

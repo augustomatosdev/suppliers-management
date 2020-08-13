@@ -1,17 +1,10 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
+import { Link } from "react-router-dom";
 
 const columns = [
   { name: "Nº/Ref." },
-  {
-    name: "Empresa",
-    options: {
-      filter: false,
-      customBodyRender: (value, tableMeta, updateValue) => {
-        return <a href={value.link}>{value.supplier}</a>;
-      },
-    },
-  },
+  { name: "Empresa" },
   { name: "Objecto" },
   { name: "Valor" },
   { name: "Data" },
@@ -21,11 +14,7 @@ const columns = [
     options: {
       filter: false,
       customBodyRender: (value, tableMeta, updateValue) => {
-        return (
-          <a target="_blank" href={value}>
-            {"Baixar"}
-          </a>
-        );
+        return <Link to={`/contracts/${value}`}>{"Abrir"}</Link>;
       },
     },
   },
@@ -75,8 +64,8 @@ const ContractsTable = ({ data }) => {
     return {
       "Nº/Ref.": contract.reference,
       Data: contract.date,
-      Empresa: { supplier: contract.supplierName, link: contract.supplier },
-      Link: contract.link,
+      Empresa: contract.supplierName,
+      Link: contract.contractId,
       Objecto: contract.objective,
       Valor: contract.price,
       Estado: contract.status,

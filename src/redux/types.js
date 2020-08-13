@@ -19,3 +19,4 @@ export const DELETE_EVENT = "DELETE_EVENT";
 
 //**********CONTRACTS TYPES ************/
 export const SET_CONTRACTS = "SET_CONTRACTS";
+export const SET_CONTRACT = "SET_CONTRACT";

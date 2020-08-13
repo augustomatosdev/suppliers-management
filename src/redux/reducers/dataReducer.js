@@ -7,9 +7,11 @@ import {
   SET_EVENTS,
   DELETE_EVENT,
   SET_CONTRACTS,
+  SET_CONTRACT,
 } from "../types";
 
 const initialState = {
+  contract: {},
   products: [],
   suppliers: [],
   events: [],
@@ -68,6 +70,11 @@ export default function (state = initialState, action) {
         ...state,
         contracts: action.payload,
         loading: false,
+      };
+    case SET_CONTRACT:
+      return {
+        ...state,
+        contract: action.payload,
       };
 
     default:

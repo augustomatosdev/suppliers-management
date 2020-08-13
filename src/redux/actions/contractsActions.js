@@ -3,6 +3,7 @@ import {
   SET_CONTRACTS,
   LOADING_DATA,
   SET_CONTRACT,
+  SET_BILLS,
 } from "../types";
 
 export const getAllContracts = (firebase) => (dispatch) => {
@@ -53,5 +54,35 @@ export const getContract = (firebase, contractId, history) => (dispatch) => {
       console.log(err);
       alert("Ocorreu um erro desconhecido, tente novamente");
       history.push("/contracts");
+    });
+};
+
+export const getContractBills = (firebase, contractId, history) => (
+  dispatch
+) => {
+  dispatch({ type: LOADING_DATA });
+
+  firebase.db
+    .collection("bills")
+    .where("contractId", "==", contractId)
+    .orderBy("date", "desc")
+    .get()
+    .then((data) => {
+      let bills = [];
+      data.forEach((doc) => {
+        bills.push({
+          ...doc.data(),
+          billId: doc.id,
+        });
+      });
+      dispatch({
+        type: SET_BILLS,
+        payload: bills,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("Ocorreu um erro desconhecido, tente novamente");
+      history.push(`/contracts/${contractId}`);
     });
 };

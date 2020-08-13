@@ -26,6 +26,8 @@ import BusinessIcon from "@material-ui/icons/BusinessCenter";
 import store from "../redux/store";
 import { logoutUser } from "../redux/actions/userActions";
 import { withFirebase } from "../components/Firebase";
+import GavelIcon from "@material-ui/icons/Gavel";
+import LowPriorityIcon from "@material-ui/icons/LowPriority";
 
 const drawerWidth = 240;
 
@@ -159,12 +161,12 @@ const Layout = (props) => {
             </ListItemIcon>
             <ListItemText primary="Inicio" />
           </ListItem>
-          {/* <ListItem button component={Link} to="/products">
+          <ListItem button component={Link} to="/products">
             <ListItemIcon>
-              <ProductsIcon />
+              <GavelIcon />
             </ListItemIcon>
-            <ListItemText primary="Produto/Serviço" />
-          </ListItem> */}
+            <ListItemText primary="Legislação" />
+          </ListItem>
           <ListItem button component={Link} to="/suppliers">
             <ListItemIcon>
               <BusinessIcon />
@@ -178,6 +180,20 @@ const Layout = (props) => {
               </span>
             </ListItemIcon>
             <ListItemText primary="Contratos" />
+          </ListItem>
+          <ListItem button component={Link} to="/contracts">
+            <ListItemIcon>
+              <span className="icon">
+                <i className="fas fa-lg fa-handshake"></i>
+              </span>
+            </ListItemIcon>
+            <ListItemText primary="Acordo-Quadro" />
+          </ListItem>
+          <ListItem button component={Link} to="/contracts">
+            <ListItemIcon>
+              <LowPriorityIcon />
+            </ListItemIcon>
+            <ListItemText primary="Procedimentos" />
           </ListItem>
         </List>
 

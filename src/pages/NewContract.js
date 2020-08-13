@@ -36,8 +36,6 @@ const NewContract = (props) => {
     });
   };
 
-  console.log(state);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const file = state.selectedFile;

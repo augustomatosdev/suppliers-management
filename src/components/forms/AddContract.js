@@ -1,9 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const AddContract = ({ suppliers }) => {
+const AddContract = ({
+  state,
+  handleChange,
+  handleSubmit,
+  suppliers,
+  handleFile,
+}) => {
+  const isDisabled =
+    !state.supplier || !state.status || !state.selectedFile || state.loaded > 0;
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="field is-horizontal">
         <div className="field-label is-normal">
           <label className="label">Numero/Ref.</label>
@@ -12,12 +20,13 @@ const AddContract = ({ suppliers }) => {
           <div className="field">
             <div className="control">
               <input
-                name="name"
+                required
                 className="input"
                 type="text"
                 placeholder="Numero ou referencia do contrato"
-                // value={state.name}
-                // onChange={handleChange}
+                name="reference"
+                value={state.reference}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -31,10 +40,13 @@ const AddContract = ({ suppliers }) => {
           <div className="field">
             <div className="control">
               <div className="select">
-                <select name="suplier">
+                <select name="supplier" onChange={handleChange}>
                   <option value="">Seleccione</option>
                   {suppliers.map((supplier) => (
-                    <option key={supplier.id} value={supplier.id}>
+                    <option
+                      key={supplier.supplierId}
+                      value={supplier.supplierId}
+                    >
                       {supplier.name}
                     </option>
                   ))}
@@ -57,9 +69,13 @@ const AddContract = ({ suppliers }) => {
               </p>
               <p class="control is-expanded">
                 <input
+                  required
                   class="input"
                   type="number"
                   placeholder="Valor do contrato"
+                  name="price"
+                  value={state.price}
+                  onChange={handleChange}
                 />
               </p>
             </div>
@@ -75,12 +91,13 @@ const AddContract = ({ suppliers }) => {
           <div className="field">
             <div className="control">
               <input
+                required
                 name="name"
                 className="input"
                 type="date"
-                // placeholder="Nome do produto ou serviço"
-                // value={state.name}
-                // onChange={handleChange}
+                name="date"
+                value={state.date}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -94,10 +111,10 @@ const AddContract = ({ suppliers }) => {
           <div className="field">
             <div className="control">
               <div className="select">
-                <select name="status">
+                <select name="status" onChange={handleChange}>
                   <option value="">Seleccione</option>
-                  <option value="">Activo</option>
-                  <option value="">Terminado</option>
+                  <option value="active">Activo</option>
+                  <option value="terminated">Terminado</option>
                 </select>
               </div>
             </div>
@@ -112,9 +129,10 @@ const AddContract = ({ suppliers }) => {
           <div className="field">
             <div className="control">
               <textarea
-                name="purpose"
-                //   value={state.obs}
-                //   onChange={handleChange}
+                required
+                name="objective"
+                value={state.objective}
+                onChange={handleChange}
                 className="textarea"
                 placeholder="Objecto do contrato"
               ></textarea>
@@ -130,11 +148,11 @@ const AddContract = ({ suppliers }) => {
           <div className="field">
             <div className="control">
               <textarea
-                name="purpose"
-                //   value={state.obs}
-                //   onChange={handleChange}
+                name="obs"
+                value={state.obs}
+                onChange={handleChange}
                 className="textarea"
-                placeholder="Objecto do contrato"
+                placeholder="Observações sobre o contrato"
               ></textarea>
             </div>
           </div>
@@ -145,13 +163,49 @@ const AddContract = ({ suppliers }) => {
           {/* <!-- Left empty for spacing --> */}
         </div>
         <div className="field-body">
+          <div class="file has-name">
+            <label class="file-label">
+              <input
+                onChange={handleFile}
+                class="file-input"
+                type="file"
+                name="file"
+                accept="application/pdf"
+              />
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">Carregar ficheiro…</span>
+              </span>
+              <span class="file-name">
+                {state.selectedFile && state.selectedFile.name}
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+      {state.loaded > 0 && (
+        <progress class="progress is-primary" value={state.loaded} max="100">
+          {state.loaded}%
+        </progress>
+      )}
+      <div className="field is-horizontal">
+        <div className="field-label">
+          {/* <!-- Left empty for spacing --> */}
+        </div>
+        <div className="field-body">
           <div className="field is-grouped">
             <div className="control">
-              <button className="button is-link">Cadastrar</button>
+              <button disabled={isDisabled} className="button is-link">
+                Cadastrar
+              </button>
             </div>
-            <Link to="/suppliers" className="button is-danger">
-              Cancelar
-            </Link>
+            {state.loaded === 0 && (
+              <Link to="/contracts" className="button is-danger">
+                Cancelar
+              </Link>
+            )}
           </div>
         </div>
       </div>

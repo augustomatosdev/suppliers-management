@@ -6,12 +6,14 @@ import {
   POST_EVENT,
   SET_EVENTS,
   DELETE_EVENT,
+  SET_CONTRACTS,
 } from "../types";
 
 const initialState = {
   products: [],
   suppliers: [],
   events: [],
+  contracts: [],
   loading: false,
 };
 
@@ -58,6 +60,14 @@ export default function (state = initialState, action) {
       state.events.splice(index, 1);
       return {
         ...state,
+      };
+
+    //*************Contracts reducers **********/
+    case SET_CONTRACTS:
+      return {
+        ...state,
+        contracts: action.payload,
+        loading: false,
       };
 
     default:

@@ -2,13 +2,13 @@ import React from "react";
 import MUIDataTable from "mui-datatables";
 
 const columns = [
-  { name: "Nº" },
+  { name: "Nº/Ref." },
   {
     name: "Empresa",
     options: {
       filter: false,
       customBodyRender: (value, tableMeta, updateValue) => {
-        return <a href={value}>{value}</a>;
+        return <a href={value.link}>{value.supplier}</a>;
       },
     },
   },
@@ -17,11 +17,15 @@ const columns = [
   { name: "Data" },
   { name: "Estado" },
   {
-    name: "Anexos",
+    name: "Link",
     options: {
       filter: false,
       customBodyRender: (value, tableMeta, updateValue) => {
-        return <a href={value}>{"Baixar"}</a>;
+        return (
+          <a target="_blank" href={value}>
+            {"Baixar"}
+          </a>
+        );
       },
     },
   },
@@ -66,25 +70,23 @@ const options = {
 };
 
 const ContractsTable = ({ data }) => {
-  //   const newArray = data.map((supplier) => {
-  //     return {
-  //       Nome: supplier.name,
-  //       NIF: supplier.nif,
-  //       Endereço: `${supplier.address.street}, ${supplier.address.municipalty}, ${supplier.address.province}`,
-  //       Contactos: `${supplier.contacts.phone1}, ${supplier.contacts.phone2}`,
-  //       Email: supplier.contacts.email,
-  //       Responsável: supplier.manager.fullName,
-  //       Inicio: supplier.startDate,
-  //       // Oservações: supplier.obs,
-  //       "Produto/Serviço": supplier.description,
-  //       type: supplier.type,
-  //     };
-  //   });
+  console.log(data);
+  const newArray = data.map((contract) => {
+    return {
+      "Nº/Ref.": contract.reference,
+      Data: contract.date,
+      Empresa: { supplier: contract.supplierName, link: contract.supplier },
+      Link: contract.link,
+      Objecto: contract.objective,
+      Valor: contract.price,
+      Estado: contract.status,
+    };
+  });
 
   return (
     <MUIDataTable
       title={"Lista de contratos"}
-      data={data}
+      data={newArray}
       columns={columns}
       options={options}
     />

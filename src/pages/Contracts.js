@@ -1,14 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ContractsTable from "../components/ContractsTable";
 import ContractsLevel from "../components/ContractsLevel";
+import { useSelector } from "react-redux";
+import store from "../redux/store";
+import { getAllContracts } from "../redux/actions/contractsActions";
+import { getAllSuppliers } from "../redux/actions/dataActions";
+import { withFirebase } from "../components/Firebase";
 
-const Contracts = () => {
+const Contracts = (props) => {
+  const contracts = useSelector((state) => state.data.contracts);
+  const suppliers = useSelector((state) => state.data.suppliers);
+
+  useEffect(() => {
+    if (contracts.length === 0) {
+      store.dispatch(getAllContracts(props.firebase));
+    }
+    if (suppliers.length === 0) {
+      store.dispatch(getAllSuppliers(props.firebase));
+    }
+  }, []);
+
+  const data = contracts.map((contract) => {
+    const supplierName = suppliers.filter(
+      (supplier) => supplier.supplierId === contract.supplier
+    );
+    return { ...contract, supplierName: supplierName[0].name };
+  });
   return (
     <div>
       <ContractsLevel />
-      <ContractsTable />
+      <ContractsTable data={data} />
     </div>
   );
 };
 
-export default Contracts;
+export default withFirebase(Contracts);

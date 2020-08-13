@@ -16,3 +16,6 @@ export const SET_SUPPLIERS = "SET_SUPPLIERS";
 export const POST_EVENT = "POST_EVENT";
 export const SET_EVENTS = "SET_EVENTS";
 export const DELETE_EVENT = "DELETE_EVENT";
+
+//**********CONTRACTS TYPES ************/
+export const SET_CONTRACTS = "SET_CONTRACTS";

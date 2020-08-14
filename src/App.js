@@ -67,12 +67,12 @@ function App(props) {
         <Switch>
           <UnAuthRoute exact path="/" component={Home} />
           <UnAuthRoute exact path="/contracts" component={Contracts} />
+          <UnAuthRoute exact path="/contracts/new" component={NewContract} />
           <UnAuthRoute
             exact
             path="/contracts/:contractId"
             component={Contract}
           />
-          <UnAuthRoute exact path="/contracts/new" component={NewContract} />
           <UnAuthRoute exact path="/suppliers" component={Suppliers} />
           <UnAuthRoute exact path="/suppliers/new" component={NewSupplier} />
           <UnAuthRoute

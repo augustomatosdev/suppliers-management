@@ -189,7 +189,7 @@ const Layout = (props) => {
             </ListItemIcon>
             <ListItemText primary="Acordo-Quadro" />
           </ListItem>
-          <ListItem button component={Link} to="/contracts">
+          <ListItem button component={Link} to="/procedures">
             <ListItemIcon>
               <LowPriorityIcon />
             </ListItemIcon>

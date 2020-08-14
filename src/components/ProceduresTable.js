@@ -3,19 +3,18 @@ import MUIDataTable from "mui-datatables";
 import { Link } from "react-router-dom";
 
 const columns = [
-  { name: "Nome" },
-  { name: "NIF" },
-  { name: "Endereço" },
-  { name: "Contactos" },
-  { name: "Email" },
-  { name: "Inicio" },
-  { name: "Produto/Serviço" },
+  { name: "Nº/Ref" },
+  { name: "Tipo" },
+  { name: "Objecto" },
+  { name: "Despacho" },
+  { name: "Data" },
+
   {
     name: "Link",
     options: {
       filter: false,
       customBodyRender: (value, tableMeta, updateValue) => {
-        return <Link to={`/suppliers/${value}`}>{"Abrir"}</Link>;
+        return <Link to={`/procedures/${value}`}>{"Abrir"}</Link>;
       },
     },
   },
@@ -25,7 +24,7 @@ const options = {
   filterType: "checkbox",
   textLabels: {
     body: {
-      noMatch: "A pesquisa não encontrou fornecedores",
+      noMatch: "A pesquisa não encontrou procedimentos",
       toolTip: "Ordenar",
       columnHeaderTooltip: (column) => `Ordenar por ${column.label}`,
     },
@@ -59,19 +58,15 @@ const options = {
   },
 };
 
-const SuppliersTable = ({ data }) => {
-  const newArray = data.map((supplier) => {
+const ProceduresTable = ({ data }) => {
+  const newArray = data.map((procedure) => {
     return {
-      Nome: supplier.name,
-      NIF: supplier.nif,
-      Endereço: supplier.address.municipalty,
-      Contactos: supplier.contacts.phone1,
-      Email: supplier.contacts.email,
-      Inicio: supplier.startDate,
-      // Oservações: supplier.obs,
-      "Produto/Serviço": supplier.description,
-      Type: supplier.type,
-      Link: supplier.supplierId,
+      "Nº/Ref": procedure.reference,
+      Despacho: procedure.description,
+      Data: procedure.date,
+      Objecto: procedure.objective,
+      Link: procedure.procedureId,
+      Tipo: procedure.type,
     };
   });
 
@@ -85,4 +80,4 @@ const SuppliersTable = ({ data }) => {
   );
 };
 
-export default SuppliersTable;
+export default ProceduresTable;

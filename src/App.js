@@ -17,7 +17,11 @@ import NewSupplier from "./pages/NewSupplier";
 import NewProduct from "./pages/NewProduct";
 import AuthRoute from "./utils/AuthRoute";
 import NewContract from "./pages/NewContract";
+import NewProcedure from "./pages/NewProcedure";
 import Contract from "./pages/Contract";
+import Supplier from "./pages/Supplier";
+import Procedures from "./pages/Procedures";
+import Procedure from "./pages/Procedure";
 
 //MUi Theme settings
 const theme = createMuiTheme({
@@ -70,9 +74,21 @@ function App(props) {
           />
           <UnAuthRoute exact path="/contracts/new" component={NewContract} />
           <UnAuthRoute exact path="/suppliers" component={Suppliers} />
+          <UnAuthRoute exact path="/suppliers/new" component={NewSupplier} />
+          <UnAuthRoute
+            exact
+            path="/suppliers/:supplierId"
+            component={Supplier}
+          />
           <UnAuthRoute exact path="/products" component={Products} />
           <UnAuthRoute exact path="/products/new" component={NewProduct} />
-          <UnAuthRoute exact path="/suppliers/new" component={NewSupplier} />
+          <UnAuthRoute exact path="/procedures" component={Procedures} />
+          <UnAuthRoute exact path="/procedures/new" component={NewProcedure} />
+          <UnAuthRoute
+            exact
+            path="/procedures/:procedureId"
+            component={Procedure}
+          />
           <UnAuthRoute exact path="/signup-user" component={Signup} />
           <AuthRoute exact path="/signin" component={Signin} />
         </Switch>

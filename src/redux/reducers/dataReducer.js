@@ -9,11 +9,20 @@ import {
   SET_CONTRACTS,
   SET_CONTRACT,
   SET_BILLS,
+  SET_SUPPLIER,
+  SET_DOCUMENTS,
+  POST_PROCEDURE,
+  SET_PROCEDURES,
+  SET_PROCEDURE,
 } from "../types";
 
 const initialState = {
+  procedures: [],
+  supplier: {},
+  procedure: {},
   contract: {},
   products: [],
+  documents: [],
   bills: [],
   suppliers: [],
   events: [],
@@ -83,6 +92,35 @@ export default function (state = initialState, action) {
       return {
         ...state,
         bills: action.payload,
+        loading: false,
+      };
+    case SET_SUPPLIER:
+      return {
+        ...state,
+        supplier: action.payload,
+        loading: false,
+      };
+    case SET_DOCUMENTS:
+      return {
+        ...state,
+        documents: action.payload,
+        loading: false,
+      };
+    case SET_PROCEDURES:
+      return {
+        ...state,
+        procedures: action.payload,
+        loading: false,
+      };
+    case POST_PROCEDURE:
+      return {
+        ...state,
+        procedures: [action.payload, ...state.procedures],
+      };
+    case SET_PROCEDURE:
+      return {
+        ...state,
+        procedure: action.payload,
         loading: false,
       };
 

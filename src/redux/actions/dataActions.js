@@ -5,6 +5,8 @@ import {
   LOADING_UI,
   POST_SUPPLIER,
   SET_SUPPLIERS,
+  SET_SUPPLIER,
+  SET_DOCUMENTS,
   LOADING_USER,
   MARK_NOTIFICATIONS_READ,
   SET_UPLOAD_FILE,
@@ -86,6 +88,58 @@ export const getAllSuppliers = (firebase) => (dispatch) => {
         type: SET_ERRORS,
         payload: err,
       });
+    });
+};
+
+export const getSupplier = (firebase, supplierId, history) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  firebase.db
+    .doc(`/suppliers/${supplierId}`)
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        alert("Este fornecedor nao existe ou deve ter sido apagado!");
+        return history.push("/suppliers");
+      }
+      dispatch({
+        type: SET_SUPPLIER,
+        payload: { ...doc.data(), supplierId: doc.id },
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("Ocorreu um erro desconhecido, tente novamente");
+      history.push("/contracts");
+    });
+};
+
+export const getSupplierDocuments = (firebase, supplierId, history) => (
+  dispatch
+) => {
+  dispatch({ type: LOADING_DATA });
+
+  firebase.db
+    .collection("documents")
+    .where("supplierId", "==", supplierId)
+    .orderBy("date", "desc")
+    .get()
+    .then((data) => {
+      let documents = [];
+      data.forEach((doc) => {
+        documents.push({
+          ...doc.data(),
+          documentId: doc.id,
+        });
+      });
+      dispatch({
+        type: SET_DOCUMENTS,
+        payload: documents,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("Ocorreu um erro desconhecido, tente novamente");
+      history.push(`/suppliers/${supplierId}`);
     });
 };
 

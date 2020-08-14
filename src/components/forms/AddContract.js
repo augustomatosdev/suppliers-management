@@ -185,30 +185,6 @@ const AddContract = ({
           </div>
         </div>
       </div>
-      {state.loaded > 0 && (
-        <progress class="progress is-primary" value={state.loaded} max="100">
-          {state.loaded}%
-        </progress>
-      )}
-      <div className="field is-horizontal">
-        <div className="field-label">
-          {/* <!-- Left empty for spacing --> */}
-        </div>
-        <div className="field-body">
-          <div className="field is-grouped">
-            <div className="control">
-              <button disabled={isDisabled} className="button is-link">
-                Cadastrar
-              </button>
-            </div>
-            {state.loaded === 0 && (
-              <Link to="/contracts" className="button is-danger">
-                Cancelar
-              </Link>
-            )}
-          </div>
-        </div>
-      </div>
     </form>
   );
 };

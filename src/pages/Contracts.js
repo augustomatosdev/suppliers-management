@@ -29,7 +29,12 @@ const Contracts = (props) => {
   return (
     <div>
       <ContractsLevel />
-      <ContractsTable data={data} />
+      <div className="columns is-centered">
+        <div className="column">
+          <h1 className="title has-text-centered">LISTA DE CONTRATOS</h1>
+          <ContractsTable data={data} />
+        </div>
+      </div>
     </div>
   );
 };

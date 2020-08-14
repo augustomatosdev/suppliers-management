@@ -185,6 +185,23 @@ const AddContract = ({
           </div>
         </div>
       </div>
+      <div className="field is-horizontal">
+        <div className="field-label">
+          {/* <!-- Left empty for spacing --> */}
+        </div>
+        <div className="field-body">
+          <div className="field is-grouped">
+            <div className="control">
+              <button disabled={isDisabled} className="button is-link">
+                Cadastrar
+              </button>
+            </div>
+            <Link to="/procedures" className="button is-danger">
+              Cancelar
+            </Link>
+          </div>
+        </div>
+      </div>
     </form>
   );
 };

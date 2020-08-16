@@ -102,7 +102,7 @@ const Supplier = ({
             )}
           </section>
           <footer class="modal-card-foot">
-            <button disabled={isDisabled} class="button is-success">
+            <button disabled={isDisabled} class="button is-warning">
               Adicionar
             </button>
             {state.loaded === 0 && (

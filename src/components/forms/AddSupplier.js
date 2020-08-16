@@ -263,7 +263,7 @@ const AddSupplier = ({
           <div className="field-body">
             <div className="field is-grouped">
               <div className="control">
-                <button className="button is-link">Cadastrar</button>
+                <button className="button is-warning">Cadastrar</button>
               </div>
               <Link to="/suppliers" className="button is-danger">
                 Cancelar

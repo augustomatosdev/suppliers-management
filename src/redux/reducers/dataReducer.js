@@ -14,9 +14,11 @@ import {
   POST_PROCEDURE,
   SET_PROCEDURES,
   SET_PROCEDURE,
+  SET_LEGISLATIONS,
 } from "../types";
 
 const initialState = {
+  legislations: [],
   procedures: [],
   supplier: {},
   procedure: {},
@@ -121,6 +123,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         procedure: action.payload,
+        loading: false,
+      };
+    case SET_LEGISLATIONS:
+      return {
+        ...state,
+        legislations: action.payload,
         loading: false,
       };
 

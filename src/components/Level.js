@@ -10,7 +10,7 @@ const Level = () => {
             <Link
               to="/suppliers/new"
               type="submit"
-              className="button is-small is-link"
+              className="button is-small is-warning"
             >
               <span className="icon is-small">
                 <i className="fas fa-plus"></i>
@@ -21,17 +21,7 @@ const Level = () => {
         </div>
       </div>
 
-      <div className="level-right">
-        <p className="level-item">
-          <a>Published</a>
-        </p>
-        <p className="level-item">
-          <a>Drafts</a>
-        </p>
-        <p className="level-item">
-          <a>Deleted</a>
-        </p>
-      </div>
+      <div className="level-right"></div>
     </nav>
   );
 };

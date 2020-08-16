@@ -192,7 +192,7 @@ const AddContract = ({
         <div className="field-body">
           <div className="field is-grouped">
             <div className="control">
-              <button disabled={isDisabled} className="button is-link">
+              <button disabled={isDisabled} className="button is-warning">
                 Cadastrar
               </button>
             </div>

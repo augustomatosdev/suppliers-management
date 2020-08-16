@@ -108,6 +108,25 @@ const Supplier = (props) => {
         closeModal={closeModal}
         handleSubmit={handleSubmit}
       />
+      <div className="level">
+        <div className="level-left"></div>
+        <div className="level-right">
+          <div className="level-item">
+            <button class="button is-warning">
+              <span class="icon is-small">
+                <i class="fas fa-edit"></i>
+              </span>
+            </button>
+          </div>
+          <div className="level-item">
+            <button class="button is-danger">
+              <span class="icon is-small">
+                <i class="fas fa-trash"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="columns is-centered">
         <div className="column is-8">
           <h1 className="is-title  is-size-2 has-text-link">{supplier.name}</h1>
@@ -155,15 +174,7 @@ const Supplier = (props) => {
               </p>{" "}
             </>
           )}
-          <br />
-          <div className="is-grouped">
-            <Link
-              to={`/contracts/supplier/${supplierId}`}
-              className="button is-success"
-            >
-              Ver contratos
-            </Link>
-          </div>
+
           <br />
           <br />
           <article class="message">

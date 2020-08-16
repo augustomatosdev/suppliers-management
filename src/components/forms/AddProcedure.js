@@ -117,7 +117,7 @@ const AddProcedure = ({ state, handleChange, handleSubmit }) => {
         <div className="field-body">
           <div className="field is-grouped">
             <div className="control">
-              <button className="button is-link">Cadastrar</button>
+              <button className="button is-warning">Cadastrar</button>
             </div>
             <Link to="/procedures" className="button is-danger">
               Cancelar

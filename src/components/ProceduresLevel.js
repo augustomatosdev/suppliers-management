@@ -10,7 +10,7 @@ const ProceduresLevel = () => {
             <Link
               to="/procedures/new"
               type="submit"
-              className="button is-small is-link"
+              className="button is-small is-warning"
             >
               <span className="icon is-small">
                 <i className="fas fa-plus"></i>

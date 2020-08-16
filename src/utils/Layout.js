@@ -28,6 +28,7 @@ import { logoutUser } from "../redux/actions/userActions";
 import { withFirebase } from "../components/Firebase";
 import GavelIcon from "@material-ui/icons/Gavel";
 import LowPriorityIcon from "@material-ui/icons/LowPriority";
+import Logo from "../assets/logo.png";
 
 const drawerWidth = 240;
 
@@ -40,6 +41,13 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    background: "hsla(43, 100%, 52%, 1)",
+    background:
+      "linear-gradient(135deg, hsla(43, 100%, 52%, 1) 0%, hsla(358, 97%, 31%, 1) 66%)",
+    background:
+      "-moz-linear-gradient(135deg, hsla(43, 100%, 52%, 1) 0%, hsla(358, 97%, 31%, 1) 66%)",
+    background:
+      "-webkit-linear-gradient(135deg, hsla(43, 100%, 52%, 1) 0%, hsla(358, 97%, 31%, 1) 66%)",
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -55,12 +63,21 @@ const useStyles = makeStyles((theme) => ({
   hide: {
     display: "none",
   },
+  divider: {
+    backgroundColor: "#0f171b",
+  },
+  listIcon: {
+    color: "white",
+  },
+
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
   },
   drawerPaper: {
     width: drawerWidth,
+    backgroundColor: "#1a252a",
+    color: "white",
   },
   drawerHeader: {
     display: "flex",
@@ -145,36 +162,42 @@ const Layout = (props) => {
         }}
       >
         <div className={classes.drawerHeader}>
+          <figure class="image is-48x48">
+            <img src={Logo} />
+          </figure>
+          <h1 className="title has-text-weight-bold is-size-5 is-marginless has-text-white">
+            GOV.CS.UCP
+          </h1>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon className={classes.listIcon} />
             ) : (
-              <ChevronRightIcon />
+              <ChevronRightIcon className={classes.listIcon} />
             )}
           </IconButton>
         </div>
-        <Divider />
+        <Divider className={classes.divider} />
         <List>
           <ListItem button component={Link} to="/">
-            <ListItemIcon>
+            <ListItemIcon className={classes.listIcon}>
               <HomeIcon />
             </ListItemIcon>
-            <ListItemText primary="Inicio" />
+            <ListItemText className={classes.listText} primary="Inicio" />
           </ListItem>
           <ListItem button component={Link} to="/products">
-            <ListItemIcon>
+            <ListItemIcon className={classes.listIcon}>
               <GavelIcon />
             </ListItemIcon>
             <ListItemText primary="Legislação" />
           </ListItem>
           <ListItem button component={Link} to="/suppliers">
-            <ListItemIcon>
+            <ListItemIcon className={classes.listIcon}>
               <BusinessIcon />
             </ListItemIcon>
             <ListItemText primary="Fornecedores" />
           </ListItem>
           <ListItem button component={Link} to="/contracts">
-            <ListItemIcon>
+            <ListItemIcon className={classes.listIcon}>
               <span className="icon">
                 <i className="fas fa-lg fa-file-contract"></i>
               </span>
@@ -182,7 +205,7 @@ const Layout = (props) => {
             <ListItemText primary="Contratos" />
           </ListItem>
           <ListItem button component={Link} to="/contracts">
-            <ListItemIcon>
+            <ListItemIcon className={classes.listIcon}>
               <span className="icon">
                 <i className="fas fa-lg fa-handshake"></i>
               </span>
@@ -190,17 +213,17 @@ const Layout = (props) => {
             <ListItemText primary="Acordo-Quadro" />
           </ListItem>
           <ListItem button component={Link} to="/procedures">
-            <ListItemIcon>
+            <ListItemIcon className={classes.listIcon}>
               <LowPriorityIcon />
             </ListItemIcon>
             <ListItemText primary="Procedimentos" />
           </ListItem>
         </List>
 
-        <Divider />
+        <Divider className={classes.divider} />
         <List>
           <ListItem button component={Link} to="/signup-user">
-            <ListItemIcon>
+            <ListItemIcon className={classes.listIcon}>
               <span className="icon">
                 <i className="fas fa-lg fa-users"></i>
               </span>

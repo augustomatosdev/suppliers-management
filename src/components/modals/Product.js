@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Procedure = ({
+const Product = ({
   state,
   handleFile,
   handleChange,
@@ -16,7 +16,7 @@ const Procedure = ({
         <div class="modal-background"></div>
         <div class="modal-card">
           <header class="modal-card-head">
-            <p class="modal-card-title">Adicionar documento</p>
+            <p class="modal-card-title">Adicionar legislação</p>
             <button
               onClick={closeModal}
               class="delete"
@@ -24,6 +24,26 @@ const Procedure = ({
             ></button>
           </header>
           <section class="modal-card-body">
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Nº/Ref</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <div className="control">
+                    <input
+                      required
+                      className="input"
+                      type="text"
+                      placeholder="Número ou referência da legislação"
+                      name="reference"
+                      value={state.reference}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
             <div className="field is-horizontal">
               <div className="field-label is-normal">
                 <label className="label">Descrição</label>
@@ -120,4 +140,4 @@ const Procedure = ({
     </form>
   );
 };
-export default Procedure;
+export default Product;

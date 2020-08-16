@@ -54,7 +54,9 @@ const AddProduct = ({ state, handleChange, handleSubmit }) => {
               <button
                 disabled={isDisabled}
                 className={
-                  isLoading ? "button is-link is-loading" : "button is-link"
+                  isLoading
+                    ? "button is-warning is-loading"
+                    : "button is-warning"
                 }
               >
                 Cadastrar

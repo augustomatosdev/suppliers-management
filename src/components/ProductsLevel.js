@@ -1,14 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-const ContractsLevel = () => {
+const ProductsLevel = ({ openModal, handleSearch }) => {
   return (
     <nav className="level is-mobile">
       <div className="level-left">
         <div className="level-item">
           <p className="subtitle is-5">
-            <Link
-              to="/contracts/new"
+            <button
+              onClick={openModal}
               type="submit"
               className="button is-small is-warning"
             >
@@ -16,24 +15,28 @@ const ContractsLevel = () => {
                 <i className="fas fa-plus"></i>
               </span>
               <span>Novo</span>
-            </Link>
+            </button>
           </p>
         </div>
       </div>
 
       <div className="level-right">
-        <p className="level-item">
-          <a>Published</a>
-        </p>
-        <p className="level-item">
-          <a>Drafts</a>
-        </p>
-        <p className="level-item">
-          <a>Deleted</a>
-        </p>
+        <div class="field has-addons">
+          <div class="control">
+            <input
+              class="input"
+              type="text"
+              placeholder="Procurar legislação"
+              onChange={handleSearch}
+            />
+          </div>
+          <div class="control">
+            <a class="button is-warning">Procurar</a>
+          </div>
+        </div>
       </div>
     </nav>
   );
 };
 
-export default ContractsLevel;
+export default ProductsLevel;

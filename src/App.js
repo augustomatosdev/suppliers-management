@@ -31,6 +31,12 @@ const theme = createMuiTheme({
         fontSize: 14,
       },
     },
+    // MUIDataTableHeadCell: {
+    //   data: {
+    //     color: "#6A040F",
+    //     fontWeight: "bold",
+    //   },
+    // },
   },
   palette: {
     primary: {

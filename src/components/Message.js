@@ -1,7 +1,7 @@
 import React from "react";
 
 const Message = () => (
-  <article className="message">
+  <article className="message is-dark">
     <div className="message-header">
       <p>Nota de esclarecimento</p>
     </div>

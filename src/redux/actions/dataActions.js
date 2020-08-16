@@ -7,9 +7,8 @@ import {
   SET_SUPPLIERS,
   SET_SUPPLIER,
   SET_DOCUMENTS,
+  SET_LEGISLATIONS,
   LOADING_USER,
-  MARK_NOTIFICATIONS_READ,
-  SET_UPLOAD_FILE,
   LOADING_DATA,
 } from "../types";
 
@@ -140,6 +139,34 @@ export const getSupplierDocuments = (firebase, supplierId, history) => (
       console.log(err);
       alert("Ocorreu um erro desconhecido, tente novamente");
       history.push(`/suppliers/${supplierId}`);
+    });
+};
+
+export const getLegislations = (firebase) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  firebase.db
+    .collection("legislations")
+    .orderBy("date", "desc")
+    .get()
+    .then((data) => {
+      let legislations = [];
+      data.forEach((doc) => {
+        legislations.push({
+          ...doc.data(),
+          legislationId: doc.id,
+        });
+      });
+      dispatch({
+        type: SET_LEGISLATIONS,
+        payload: legislations,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err,
+      });
     });
 };
 

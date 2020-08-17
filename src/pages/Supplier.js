@@ -116,12 +116,12 @@ const Supplier = (props) => {
         <div className="level-left"></div>
         <div className="level-right">
           <div className="level-item">
-            <span
-              style={{ cursor: "pointer" }}
+            <Link
+              to={`/suppliers/edit/${supplierId}`}
               class="icon is-small has-text-warning"
             >
               <i class="fas fa-lg fa-edit"></i>
-            </span>
+            </Link>
           </div>
           <div className="level-item"></div>
           <div className="level-item">

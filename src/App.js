@@ -22,6 +22,7 @@ import Contract from "./pages/Contract";
 import Supplier from "./pages/Supplier";
 import Procedures from "./pages/Procedures";
 import Procedure from "./pages/Procedure";
+import EditSupplier from "./pages/EditSupplier";
 
 //MUi Theme settings
 const theme = createMuiTheme({
@@ -84,6 +85,11 @@ function App(props) {
             exact
             path="/suppliers/:supplierId"
             component={Supplier}
+          />
+          <UnAuthRoute
+            exact
+            path="/suppliers/edit/:supplierId"
+            component={EditSupplier}
           />
           <UnAuthRoute exact path="/products" component={Products} />
           <UnAuthRoute exact path="/products/new" component={NewProduct} />

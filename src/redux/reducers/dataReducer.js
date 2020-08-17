@@ -15,9 +15,12 @@ import {
   SET_PROCEDURES,
   SET_PROCEDURE,
   SET_LEGISLATIONS,
+  SET_USERS,
+  STOP_LOADING_DATA,
 } from "../types";
 
 const initialState = {
+  users: [],
   legislations: [],
   procedures: [],
   supplier: {},
@@ -38,6 +41,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: true,
+      };
+    case STOP_LOADING_DATA:
+      return {
+        ...state,
+        loading: false,
       };
 
     case POST_PRODUCT:
@@ -129,6 +137,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         legislations: action.payload,
+        loading: false,
+      };
+    case SET_USERS:
+      return {
+        ...state,
+        users: action.payload,
         loading: false,
       };
 

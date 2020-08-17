@@ -14,13 +14,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Logo from "../assets/logo.png";
 import { useSelector } from "react-redux";
+import Loading from "./Loading";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        Departamento Provincial de Contratação Pública do Cuanza Sul
+        Departamento Provincial da Contratação Pública do Cuanza Sul
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -48,7 +49,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SigninForm({ state, handleChange, handleSubmit }) {
+export default function SigninForm({
+  state,
+  handleChange,
+  handleSubmit,
+  loading,
+}) {
   const classes = useStyles();
   const errors = useSelector((state) => state.UI.errors);
 
@@ -56,12 +62,11 @@ export default function SigninForm({ state, handleChange, handleSubmit }) {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <figure className="image is-64x64">
+        <figure className="image is-128x128">
           <img style={{ maxHeight: "100%" }} src={Logo} />
         </figure>
-        <h1 className="subtitle has-text-centered is-size-7 is-marginless">
-          DEPARTAMENTO DE CONTRATAÇÃO PÚBLICA DO GOVERNO PROVINCIAL DO CUANZA
-          SUL
+        <h1 className="title has-text-centered is-marginless has-text-weight-bold has-text-danger">
+          GOV.CS.UCP
         </h1>
 
         <form className={classes.form} onSubmit={handleSubmit}>
@@ -102,10 +107,12 @@ export default function SigninForm({ state, handleChange, handleSubmit }) {
             type="submit"
             fullWidth
             variant="contained"
+            disabled={loading}
             color="primary"
             className={classes.submit}
           >
-            Entrar
+            {" "}
+            {loading ? <Loading /> : "Entrar"}
           </Button>
           <Grid container>
             <Grid item xs>

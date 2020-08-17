@@ -10,7 +10,37 @@ import {
   SET_LEGISLATIONS,
   LOADING_USER,
   LOADING_DATA,
+  SET_USERS,
+  STOP_LOADING_DATA,
+  STOP_LOADING_UI,
 } from "../types";
+
+export const getAllUsers = (firebase) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  firebase.db
+    .collection("users")
+    .orderBy("displayName", "asc")
+    .get()
+    .then((data) => {
+      let users = [];
+      data.forEach((doc) => {
+        users.push({
+          ...doc.data(),
+        });
+      });
+      dispatch({
+        type: SET_USERS,
+        payload: users,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err,
+      });
+    });
+};
 
 // ***************Products and services actions********************
 export const postProduct_Service = (firebase, newProduct) => (dispatch) => {
@@ -91,7 +121,7 @@ export const getAllSuppliers = (firebase) => (dispatch) => {
 };
 
 export const getSupplier = (firebase, supplierId, history) => (dispatch) => {
-  dispatch({ type: LOADING_DATA });
+  dispatch({ type: LOADING_UI });
   firebase.db
     .doc(`/suppliers/${supplierId}`)
     .get()
@@ -103,6 +133,9 @@ export const getSupplier = (firebase, supplierId, history) => (dispatch) => {
       dispatch({
         type: SET_SUPPLIER,
         payload: { ...doc.data(), supplierId: doc.id },
+      });
+      dispatch({
+        type: STOP_LOADING_UI,
       });
     })
     .catch((err) => {
@@ -159,6 +192,84 @@ export const getLegislations = (firebase) => (dispatch) => {
       dispatch({
         type: SET_LEGISLATIONS,
         payload: legislations,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err,
+      });
+    });
+};
+
+export const deleteLegislation = (firebase, legislationId) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  const document = firebase.db.doc(`/legislations/${legislationId}`);
+  document
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        return alert("Este documento já foi eliminado!");
+      } else {
+        return document.delete();
+      }
+    })
+    .then(() => {
+      alert("Documento eliminado com sucesso!");
+      return dispatch(getLegislations(firebase));
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err,
+      });
+    });
+};
+
+export const deleteSupplier = (firebase, supplierId, history) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  const document = firebase.db.doc(`/suppliers/${supplierId}`);
+  document
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        return alert("Este fornecedor já foi eliminado!");
+      } else {
+        return document.delete();
+      }
+    })
+    .then(() => {
+      alert("Documento eliminado com sucesso!");
+      dispatch(getAllSuppliers(firebase));
+      history.push("/suppliers");
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err,
+      });
+    });
+};
+
+export const deleteDocument = (firebase, documentId) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  const document = firebase.db.doc(`/documents/${documentId}`);
+  document
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        return alert("Este documento já foi eliminado!");
+      } else {
+        return document.delete();
+      }
+    })
+    .then(() => {
+      alert("Documento eliminado com sucesso!");
+      dispatch({
+        type: STOP_LOADING_DATA,
       });
     })
     .catch((err) => {

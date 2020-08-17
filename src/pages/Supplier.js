@@ -4,15 +4,20 @@ import store from "../redux/store";
 import {
   getSupplierDocuments,
   getSupplier,
+  deleteSupplier,
+  deleteDocument,
 } from "../redux/actions/dataActions";
 import { withFirebase } from "../components/Firebase";
 import { Link } from "react-router-dom";
 import SupplierModal from "../components/modals/Supplier";
+import Loading from "../components/Loading";
+import { LOADING_DATA } from "../redux/types";
 
 const Supplier = (props) => {
   const supplier = useSelector((state) => state.data.supplier);
   const documents = useSelector((state) => state.data.documents);
   const supplierId = props.match.params.supplierId;
+  const loading = useSelector((state) => state.UI.loading);
   const [state, setState] = useState({
     description: "",
     date: "",
@@ -51,9 +56,8 @@ const Supplier = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    store.dispatch({ type: LOADING_DATA });
     const file = state.selectedFile;
-
     const imageExtension = file.name.split(".")[
       file.name.split(".").length - 1
     ];
@@ -112,112 +116,152 @@ const Supplier = (props) => {
         <div className="level-left"></div>
         <div className="level-right">
           <div className="level-item">
-            <button class="button is-warning">
-              <span class="icon is-small">
-                <i class="fas fa-edit"></i>
-              </span>
-            </button>
+            <span
+              style={{ cursor: "pointer" }}
+              class="icon is-small has-text-warning"
+            >
+              <i class="fas fa-lg fa-edit"></i>
+            </span>
           </div>
+          <div className="level-item"></div>
           <div className="level-item">
-            <button class="button is-danger">
-              <span class="icon is-small">
-                <i class="fas fa-trash"></i>
-              </span>
-            </button>
+            <span
+              style={{ cursor: "pointer" }}
+              class="icon is-small has-text-danger"
+              onClick={() => {
+                store.dispatch(
+                  deleteSupplier(props.firebase, supplierId, props.history)
+                );
+              }}
+            >
+              <i class="fas fa-lg fa-trash"></i>
+            </span>
           </div>
         </div>
       </div>
-      <div className="columns is-centered">
-        <div className="column is-8">
-          <h1 className="is-title  is-size-2 has-text-link">{supplier.name}</h1>
-          <p className="is-size-5">
-            <strong>Produto/Serviço: </strong>
-            {supplier.description}
-          </p>
-          <p className="is-size-5">
-            <strong>NIF: </strong>
-            {supplier.nif}
-          </p>
-          <p className="is-size-5">
-            <strong>Endereço: </strong>
-            {supplier.address &&
-              (supplier.address.street,
-              supplier.address.municipalty,
-              supplier.address.province)}
-          </p>
-          {supplier.contacts && (
-            <>
-              <p className="is-size-5">
-                <strong>Contactos: </strong>
-                {supplier.contacts.phone1}, {supplier.contacts.phone2}
-              </p>
-              <p className="is-size-5">
-                <strong>Email: </strong>
-                {supplier.contacts.email}
-              </p>{" "}
-            </>
-          )}
-          <p className="is-size-5">
-            <strong>Inicio de vinculo: </strong>
-            {supplier.date}
-          </p>
-          {supplier.manager && (
-            <>
-              {" "}
-              <p className="is-size-5">
-                <strong>Responsável: </strong>
-                {supplier.manager.fullName}
-              </p>
-              <p className="is-size-5">
-                <strong>B.I/Responsável: </strong>
-                {supplier.manager.idCard}
-              </p>{" "}
-            </>
-          )}
 
-          <br />
-          <br />
-          <article class="message">
-            <div class="message-header">
-              <p>Documentos </p>
-              <button onClick={openModal} class="button is-small">
-                <span class="icon is-small">
-                  <i class="fas fa-plus"></i>
-                </span>
-                <span>Adicionar</span>
-              </button>
-            </div>
-            <div class="message-body">
-              {documents.length > 0 ? (
-                documents.map((document) => (
-                  <div className="level">
-                    <a
-                      href={document.link}
-                      target="_blank"
-                      className="has-text-link"
-                    >
-                      <span class="icon is-small">
-                        <i class="fas fa-2x fa-file-alt"></i>
-                      </span>
-                    </a>
-                    <p>{`${document.description}`}</p>
-                    <p>
-                      {document.date}{" "}
-                      <span class="icon is-small has-text-danger">
-                        <i class="fas fa-trash"></i>
-                      </span>
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p className="has-text-danger">
-                  Não existem documentos para este fornecedor!
-                </p>
-              )}
-            </div>
-          </article>
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Loading />
         </div>
-      </div>
+      ) : (
+        <div className="columns is-centered">
+          <div className="column is-8">
+            <h1 className="is-title  is-size-2 has-text-link">
+              {supplier.name}
+            </h1>
+            <p className="is-size-5">
+              <strong>Produto/Serviço: </strong>
+              {supplier.description}
+            </p>
+            <p className="is-size-5">
+              <strong>NIF: </strong>
+              {supplier.nif}
+            </p>
+            <p className="is-size-5">
+              <strong>Endereço: </strong>
+              {supplier.address
+                ? `${supplier.address.street}, ${supplier.address.municipalty}, ${supplier.address.province}`
+                : ""}
+            </p>
+            {supplier.contacts && (
+              <>
+                <p className="is-size-5">
+                  <strong>Contactos: </strong>
+                  {supplier.contacts.phone1}, {supplier.contacts.phone2}
+                </p>
+                <p className="is-size-5">
+                  <strong>Email: </strong>
+                  {supplier.contacts.email}
+                </p>{" "}
+              </>
+            )}
+            <p className="is-size-5">
+              <strong>Inicio de vinculo: </strong>
+              {supplier.date}
+            </p>
+            {supplier.manager && (
+              <>
+                {" "}
+                <p className="is-size-5">
+                  <strong>Responsável: </strong>
+                  {supplier.manager.fullName}
+                </p>
+                <p className="is-size-5">
+                  <strong>B.I/Responsável: </strong>
+                  {supplier.manager.idCard}
+                </p>{" "}
+              </>
+            )}
+
+            <br />
+            <br />
+            <article class="message">
+              <div class="message-header">
+                <p>Documentos </p>
+                <button onClick={openModal} class="button is-small">
+                  <span class="icon is-small">
+                    <i class="fas fa-plus"></i>
+                  </span>
+                  <span>Adicionar</span>
+                </button>
+              </div>
+              <div class="message-body">
+                {documents.length > 0 ? (
+                  documents.map((document) => (
+                    <div className="level">
+                      <a
+                        href={document.link}
+                        target="_blank"
+                        className="has-text-link"
+                      >
+                        <span class="icon is-small">
+                          <i class="fas fa-2x fa-file-alt"></i>
+                        </span>
+                      </a>
+                      <p>{`${document.description}`}</p>
+                      <p>
+                        {document.date}{" "}
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            store.dispatch(
+                              deleteDocument(
+                                props.firebase,
+                                document.documentId
+                              )
+                            );
+                            store.dispatch(
+                              getSupplierDocuments(
+                                props.firebase,
+                                supplierId,
+                                props.history
+                              )
+                            );
+                          }}
+                          class="icon is-small has-text-danger"
+                        >
+                          <i class="fas fa-trash"></i>
+                        </span>
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="has-text-danger">
+                    Não existem documentos para este fornecedor!
+                  </p>
+                )}
+              </div>
+            </article>
+          </div>
+        </div>
+      )}
     </>
   );
 };

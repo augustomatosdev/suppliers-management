@@ -5,6 +5,7 @@ import { withFirebase } from "../components/Firebase";
 import AddContract from "../components/forms/AddContract";
 import { getAllSuppliers } from "../redux/actions/dataActions";
 import { getAllContracts } from "../redux/actions/contractsActions";
+import { LOADING_DATA } from "../redux/types";
 
 const NewContract = (props) => {
   const suppliers = useSelector((state) => state.data.suppliers);
@@ -38,6 +39,7 @@ const NewContract = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    store.dispatch({ type: LOADING_DATA });
     const file = state.selectedFile;
 
     const imageExtension = file.name.split(".")[
@@ -73,6 +75,8 @@ const NewContract = (props) => {
               date: state.date,
               status: state.status,
               objective: state.objective,
+              paid: 0,
+              toPay: 0,
               obs: state.obs,
               link: downloadURL,
             };

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AddContract = ({
   state,
@@ -8,6 +9,7 @@ const AddContract = ({
   suppliers,
   handleFile,
 }) => {
+  const loading = useSelector((state) => state.data.loading);
   const isDisabled =
     !state.supplier || !state.status || !state.selectedFile || state.loaded > 0;
   return (
@@ -192,11 +194,16 @@ const AddContract = ({
         <div className="field-body">
           <div className="field is-grouped">
             <div className="control">
-              <button disabled={isDisabled} className="button is-warning">
+              <button
+                disabled={isDisabled}
+                className={
+                  loading ? "button is-warning is-loading" : "button is-warning"
+                }
+              >
                 Cadastrar
               </button>
             </div>
-            <Link to="/procedures" className="button is-danger">
+            <Link to="/contracts" className="button is-danger">
               Cancelar
             </Link>
           </div>

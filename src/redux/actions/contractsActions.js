@@ -4,6 +4,8 @@ import {
   LOADING_DATA,
   SET_CONTRACT,
   SET_BILLS,
+  LOADING_UI,
+  STOP_LOADING_UI,
 } from "../types";
 
 export const getAllContracts = (firebase) => (dispatch) => {
@@ -36,7 +38,7 @@ export const getAllContracts = (firebase) => (dispatch) => {
 };
 
 export const getContract = (firebase, contractId, history) => (dispatch) => {
-  dispatch({ type: LOADING_DATA });
+  dispatch({ type: LOADING_UI });
   firebase.db
     .doc(`/contracts/${contractId}`)
     .get()
@@ -48,6 +50,9 @@ export const getContract = (firebase, contractId, history) => (dispatch) => {
       dispatch({
         type: SET_CONTRACT,
         payload: { ...doc.data(), contractId: doc.id },
+      });
+      dispatch({
+        type: STOP_LOADING_UI,
       });
     })
     .catch((err) => {
@@ -84,5 +89,31 @@ export const getContractBills = (firebase, contractId, history) => (
       console.log(err);
       alert("Ocorreu um erro desconhecido, tente novamente");
       history.push(`/contracts/${contractId}`);
+    });
+};
+
+export const deleteContract = (firebase, contractId, history) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  const document = firebase.db.doc(`/contracts/${contractId}`);
+  document
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        return alert("Este contrato já foi eliminado!");
+      } else {
+        return document.delete();
+      }
+    })
+    .then(() => {
+      alert("Documento eliminado com sucesso!");
+      dispatch(getAllContracts(firebase));
+      history.push("/contracts");
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err,
+      });
     });
 };

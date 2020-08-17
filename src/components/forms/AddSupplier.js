@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AddSupplier = ({
   handleContacts,
@@ -9,6 +10,7 @@ const AddSupplier = ({
   handleChange,
   handleAddress,
 }) => {
+  const loading = useSelector((state) => state.UI.loading);
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -263,7 +265,15 @@ const AddSupplier = ({
           <div className="field-body">
             <div className="field is-grouped">
               <div className="control">
-                <button className="button is-warning">Cadastrar</button>
+                <button
+                  className={
+                    loading
+                      ? "button is-warning is-loading"
+                      : "button is-warning "
+                  }
+                >
+                  Cadastrar
+                </button>
               </div>
               <Link to="/suppliers" className="button is-danger">
                 Cancelar

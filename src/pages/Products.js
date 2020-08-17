@@ -3,8 +3,12 @@ import ProductsLevel from "../components/ProductsLevel";
 import ProductModal from "../components/modals/Product";
 import { useSelector } from "react-redux";
 import { withFirebase } from "../components/Firebase";
-import { getLegislations } from "../redux/actions/dataActions";
+import {
+  getLegislations,
+  deleteLegislation,
+} from "../redux/actions/dataActions";
 import store from "../redux/store";
+import Loading from "../components/Loading";
 
 const Products = (props) => {
   const [state, setState] = useState({
@@ -16,6 +20,8 @@ const Products = (props) => {
     loaded: 0,
     modal: false,
   });
+
+  const loading = useSelector((state) => state.data.loading);
 
   const legislations = useSelector((state) => state.data.legislations).filter(
     (data) => {
@@ -30,7 +36,9 @@ const Products = (props) => {
   );
 
   useEffect(() => {
-    store.dispatch(getLegislations(props.firebase));
+    if (legislations.length === 0) {
+      store.dispatch(getLegislations(props.firebase));
+    }
   }, []);
 
   const openModal = () => {
@@ -125,26 +133,70 @@ const Products = (props) => {
       <div className="columns is-centered">
         <div className="column is-6">
           <h1 className="title has-text-centered">LEGISLAÇÃO</h1>
-          {legislations.map((legis) => {
-            return (
-              <>
-                <div>
-                  <a
-                    href={legis.link}
-                    target="_blank"
-                    className="subtitle has-text-danger has-text-weight-bold"
-                  >
-                    {legis.reference}
-                  </a>
-                </div>
-                <p>{legis.description}</p>
-                <p>
-                  <strong>Data:</strong> {legis.date}
-                </p>
-                <br />
-              </>
-            );
-          })}
+          {loading && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Loading />
+            </div>
+          )}
+
+          {legislations.length > 0
+            ? legislations.map((legis) => {
+                return (
+                  <>
+                    <div className="card">
+                      <div className="card-content">
+                        <div className="level is-mobile">
+                          <div className="level-left">
+                            <div>
+                              <a
+                                href={legis.link}
+                                target="_blank"
+                                className="subtitle has-text-danger has-text-weight-bold"
+                              >
+                                {legis.reference}
+                              </a>
+                            </div>
+                          </div>
+                          <div className="level-right">
+                            <div className="level-item">
+                              <span
+                                style={{ cursor: "pointer" }}
+                                class="icon is-small has-text-danger"
+                                onClick={() =>
+                                  store.dispatch(
+                                    deleteLegislation(
+                                      props.firebase,
+                                      legis.legislationId
+                                    )
+                                  )
+                                }
+                              >
+                                <i class="fas fa-trash"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <p>{legis.description}</p>
+                        <p>
+                          <strong>Data:</strong> {legis.date}
+                        </p>
+                      </div>
+                    </div>
+                    <br />
+                  </>
+                );
+              })
+            : !loading && (
+                <h1 className="has-text-danger">
+                  A pesquisa nao encontrou resultados
+                </h1>
+              )}
         </div>
       </div>
     </>

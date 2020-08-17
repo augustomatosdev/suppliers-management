@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { withFirebase } from "./Firebase";
-import { getAllSuppliers } from "../redux/actions/dataActions";
+import { getAllSuppliers, getAllUsers } from "../redux/actions/dataActions";
+import { getAllProcedures } from "../redux/actions/procedureActions";
 import { getAllContracts } from "../redux/actions/contractsActions";
 import store from "../redux/store";
 import { Link } from "react-router-dom";
@@ -9,6 +10,8 @@ import { Link } from "react-router-dom";
 const DashInfo = (props) => {
   const suppliers = useSelector((state) => state.data.suppliers);
   const contracts = useSelector((state) => state.data.contracts);
+  const procedures = useSelector((state) => state.data.procedures);
+  const users = useSelector((state) => state.data.users);
   useEffect(() => {
     if (suppliers.length === 0) {
       store.dispatch(getAllSuppliers(props.firebase));
@@ -16,14 +19,20 @@ const DashInfo = (props) => {
     if (contracts.length === 0) {
       store.dispatch(getAllContracts(props.firebase));
     }
+    if (procedures.length === 0) {
+      store.dispatch(getAllProcedures(props.firebase));
+    }
+    if (procedures.length === 0) {
+      store.dispatch(getAllUsers(props.firebase));
+    }
   }, []);
   return (
     <>
       <div className="columns is-multiline">
         <div className="column">
           <div
-            className="box notification is-warning"
-            style={{ backgroundColor: "#F48C06" }}
+            className="box notification"
+            style={{ backgroundColor: "#F48C06", color: "white" }}
           >
             <div className="heading">Fornecedores</div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -80,7 +89,7 @@ const DashInfo = (props) => {
           >
             <div className="heading">Procedimentos</div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <div className="title">{contracts.length}</div>
+              <div className="title">{procedures.length}</div>
               <div className="title">
                 <span className="icon">
                   <i className="fas fa-lg fa-tasks"></i>
@@ -105,7 +114,7 @@ const DashInfo = (props) => {
           <div className="box notification is-success">
             <div className="heading">Usuários</div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <div className="title">{contracts.length}</div>
+              <div className="title">{users.length}</div>
               <div className="title">
                 <span className="icon">
                   <i className="fas fa-lg fa-users"></i>

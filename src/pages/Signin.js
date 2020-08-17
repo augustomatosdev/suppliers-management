@@ -11,6 +11,21 @@ const Signin = (props) => {
     password: "",
     errors: {},
   });
+  const loading = useSelector((state) => state.UI.loading);
+
+  // if (loading)
+  //   return (
+  //     <div
+  //       style={{
+  //         minHeight: "100vh",
+  //         display: "flex",
+  //         alignItems: "center",
+  //         justifyContent: "center",
+  //       }}
+  //     >
+
+  //     </div>
+  //   );
 
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -24,14 +39,13 @@ const Signin = (props) => {
     store.dispatch(loginUser(user, props.history, props.firebase));
   };
 
-  const authenticated = useSelector((state) => state.user.authenticated);
-  console.log(authenticated);
   return (
     <div>
       <SigninForm
         state={state}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
+        loading={loading}
       />
     </div>
   );

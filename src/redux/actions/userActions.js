@@ -6,6 +6,7 @@ import {
   SET_UNAUTHENTICATED,
   LOADING_USER,
   MARK_NOTIFICATIONS_READ,
+  SET_USERS,
 } from "../types";
 import { validateSignupData, validateLoginData } from "../../utils/validators";
 import { config } from "../../components/Firebase/config";

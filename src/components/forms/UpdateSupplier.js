@@ -10,7 +10,7 @@ const EditSupplier = ({
   handleChange,
   handleAddress,
 }) => {
-  const loading = useSelector((state) => state.UI.loading);
+  const loading = useSelector((state) => state.data.loading);
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -26,7 +26,7 @@ const EditSupplier = ({
                   type="text"
                   placeholder="Nome da empresa ou fornecedor"
                   name="name"
-                  value={state.name}
+                  value={state.name || ""}
                   onChange={handleChange}
                   required
                 />
@@ -46,7 +46,7 @@ const EditSupplier = ({
                   type="text"
                   placeholder="Numero de identificacao fiscal da empresa"
                   name="nif"
-                  value={state.nif}
+                  value={state.nif || ""}
                   onChange={handleChange}
                   required
                 />
@@ -62,7 +62,7 @@ const EditSupplier = ({
             <div className="field">
               <div className="control">
                 <input
-                  // value={state.address.municipalty}
+                  value={(state.address && state.address.street) || ""}
                   name="street"
                   onChange={handleAddress}
                   className="input"
@@ -75,6 +75,7 @@ const EditSupplier = ({
             <div className="field">
               <div className="control">
                 <input
+                  value={state.address ? state.address.municipalty : ""}
                   name="municipalty"
                   onChange={handleAddress}
                   className="input"
@@ -87,6 +88,7 @@ const EditSupplier = ({
             <div className="field">
               <div className="control">
                 <input
+                  value={state.address ? state.address.province : ""}
                   name="province"
                   onChange={handleAddress}
                   className="input"
@@ -106,6 +108,7 @@ const EditSupplier = ({
             <div className="field">
               <div className="control">
                 <input
+                  value={state.contacts ? state.contacts.phone1 : ""}
                   name="phone1"
                   onChange={handleContacts}
                   className="input"
@@ -118,6 +121,7 @@ const EditSupplier = ({
             <div className="field">
               <div className="control">
                 <input
+                  value={state.contacts ? state.contacts.phone2 : ""}
                   name="phone2"
                   onChange={handleContacts}
                   className="input"
@@ -129,6 +133,7 @@ const EditSupplier = ({
             <div className="field">
               <div className="control">
                 <input
+                  value={state.contacts ? state.contacts.email : ""}
                   name="email"
                   onChange={handleContacts}
                   className="input"
@@ -147,6 +152,7 @@ const EditSupplier = ({
             <div className="field">
               <div className="control">
                 <input
+                  value={state.manager ? state.manager.fullName : ""}
                   name="fullName"
                   onChange={handleManager}
                   className="input"
@@ -159,6 +165,7 @@ const EditSupplier = ({
             <div className="field">
               <div className="control">
                 <input
+                  value={state.manager ? state.manager.phone : ""}
                   name="phone"
                   onChange={handleManager}
                   className="input"
@@ -170,6 +177,7 @@ const EditSupplier = ({
             <div className="field">
               <div className="control">
                 <input
+                  value={state.manager ? state.manager.idCard : ""}
                   name="idCard"
                   onChange={handleManager}
                   className="input"
@@ -189,7 +197,7 @@ const EditSupplier = ({
               <div className="control">
                 <input
                   name="startDate"
-                  value={state.startDate}
+                  value={state.startDate || ""}
                   onChange={handleChange}
                   className="input"
                   type="date"
@@ -207,7 +215,7 @@ const EditSupplier = ({
               <div className="control">
                 <div className="select">
                   <select
-                    onChange={handleChange}
+                    onChange={handleChange || ""}
                     value={state.type}
                     name="type"
                   >
@@ -229,7 +237,7 @@ const EditSupplier = ({
               <div className="control">
                 <textarea
                   name="description"
-                  value={state.description}
+                  value={state.description || ""}
                   onChange={handleChange}
                   className="textarea"
                   placeholder="Descrição do produto ou serviço"
@@ -272,12 +280,14 @@ const EditSupplier = ({
                       : "button is-warning "
                   }
                 >
-                  Cadastrar
+                  Actualizar
                 </button>
               </div>
-              <Link to="/suppliers" className="button is-danger">
-                Cancelar
-              </Link>
+              {!loading && (
+                <Link to="/suppliers" className="button is-danger">
+                  Cancelar
+                </Link>
+              )}
             </div>
           </div>
         </div>

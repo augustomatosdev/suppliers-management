@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Contract = ({
   state,
@@ -10,6 +11,8 @@ const Contract = ({
   closeModal,
 }) => {
   const isDisabled = !state.selectedFile || state.loaded > 0;
+  const loading = useSelector((state) => state.data.loading);
+
   return (
     <form onSubmit={handleSubmit}>
       <div class={state.modal ? "modal is-active" : "modal"}>
@@ -130,10 +133,15 @@ const Contract = ({
             )}
           </section>
           <footer class="modal-card-foot">
-            <button disabled={isDisabled} class="button is-warning">
+            <button
+              disabled={isDisabled}
+              class={
+                loading ? "button is-warning is-loading" : "button is-warning"
+              }
+            >
               Adicionar
             </button>
-            {state.loaded === 0 && (
+            {!loading && (
               <button
                 onClick={closeModal}
                 type="button"

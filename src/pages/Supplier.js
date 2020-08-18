@@ -234,12 +234,7 @@ const Supplier = (props) => {
                             store.dispatch(
                               deleteDocument(
                                 props.firebase,
-                                document.documentId
-                              )
-                            );
-                            store.dispatch(
-                              getSupplierDocuments(
-                                props.firebase,
+                                document.documentId,
                                 supplierId,
                                 props.history
                               )

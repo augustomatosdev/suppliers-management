@@ -10,6 +10,7 @@ import { withFirebase } from "../components/Firebase";
 import { Link } from "react-router-dom";
 import ContractModal from "../components/modals/Contract";
 import Loading from "../components/Loading";
+import { LOADING_DATA } from "../redux/types";
 
 const Contract = (props) => {
   const contract = useSelector((state) => state.data.contract);
@@ -57,6 +58,7 @@ const Contract = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    store.dispatch({ type: LOADING_DATA });
 
     const file = state.selectedFile;
 
@@ -96,8 +98,17 @@ const Contract = (props) => {
             return props.firebase.db.collection("bills").add(newBill);
           })
           .then((doc) => {
+            return props.firebase.db.doc(`/contracts/${contractId}`).update({
+              toPay: Number(contract.toPay) - Number(state.price),
+              paid: Number(contract.paid) + Number(state.price),
+            });
+          })
+          .then(() => {
             alert(`Factura #${state.description} adicionado com sucesso!`);
             closeModal();
+            store.dispatch(
+              getContract(props.firebase, contractId, props.history)
+            );
             store.dispatch(
               getContractBills(props.firebase, contractId, props.history)
             );
@@ -105,6 +116,7 @@ const Contract = (props) => {
       }
     );
   };
+  console.log(state);
 
   return (
     <div>
@@ -174,6 +186,14 @@ const Contract = (props) => {
             <p className="is-size-5">
               <strong>Valor do contrato: </strong>
               {contract.price && `Akz: ${contract.price},00`}
+            </p>
+            <p className="is-size-5">
+              <strong>Valor pago: </strong>
+              {`Akz: ${contract.paid},00`}
+            </p>
+            <p className="is-size-5">
+              <strong>Valor por pagar: </strong>
+              {`Akz: ${contract.toPay},00`}
             </p>
             <p className="is-size-5">
               <strong>Estado: </strong>

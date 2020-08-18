@@ -253,8 +253,29 @@ export const deleteSupplier = (firebase, supplierId, history) => (dispatch) => {
       });
     });
 };
+export const updateSupplier = (firebase, supplierId, history, supplierData) => (
+  dispatch
+) => {
+  dispatch({ type: LOADING_DATA });
+  firebase.db
+    .doc(`/suppliers/${supplierId}`)
+    .update(supplierData)
+    .then(() => {
+      alert("Actualização feita com sucesso!");
+      history.push(`/suppliers/${supplierId}`);
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err,
+      });
+    });
+};
 
-export const deleteDocument = (firebase, documentId) => (dispatch) => {
+export const deleteDocument = (firebase, documentId, supplierId, history) => (
+  dispatch
+) => {
   dispatch({ type: LOADING_DATA });
   const document = firebase.db.doc(`/documents/${documentId}`);
   document
@@ -268,9 +289,7 @@ export const deleteDocument = (firebase, documentId) => (dispatch) => {
     })
     .then(() => {
       alert("Documento eliminado com sucesso!");
-      dispatch({
-        type: STOP_LOADING_DATA,
-      });
+      dispatch(getSupplierDocuments(firebase, supplierId, history));
     })
     .catch((err) => {
       console.log(err);

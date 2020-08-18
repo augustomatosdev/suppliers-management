@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import AddSupplier from "../components/forms/AddSupplier";
 import { useSelector } from "react-redux";
 import store from "../redux/store";
-import { postSupplier, getSupplier } from "../redux/actions/dataActions";
+import {
+  postSupplier,
+  getSupplier,
+  updateSupplier,
+} from "../redux/actions/dataActions";
 import { withFirebase } from "../components/Firebase";
 import UpdateSupplier from "../components/forms/UpdateSupplier";
 
 const EditSupplier = (props) => {
   const supplier = useSelector((state) => state.data.supplier);
   const supplierId = props.match.params.supplierId;
+
   const [state, setState] = useState({});
   useEffect(() => {
     store.dispatch(getSupplier(props.firebase, supplierId, props.history));
@@ -39,7 +44,9 @@ const EditSupplier = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    store.dispatch(postSupplier(props.firebase, state, props.history));
+    store.dispatch(
+      updateSupplier(props.firebase, supplierId, props.history, state)
+    );
   };
   console.log(state);
 

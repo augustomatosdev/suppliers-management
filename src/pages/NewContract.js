@@ -76,7 +76,7 @@ const NewContract = (props) => {
               status: state.status,
               objective: state.objective,
               paid: 0,
-              toPay: 0,
+              toPay: state.price,
               obs: state.obs,
               link: downloadURL,
             };

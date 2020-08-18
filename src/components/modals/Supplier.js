@@ -112,7 +112,7 @@ const Supplier = ({
             >
               Adicionar
             </button>
-            {state.loaded === 0 && (
+            {!loading && (
               <button
                 onClick={closeModal}
                 type="button"

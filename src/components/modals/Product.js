@@ -12,18 +12,18 @@ const Product = ({
   const isDisabled = !state.selectedFile || state.loaded > 0;
   return (
     <form onSubmit={handleSubmit}>
-      <div class={state.modal ? "modal is-active" : "modal"}>
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Adicionar legislação</p>
+      <div className={state.modal ? "modal is-active" : "modal"}>
+        <div className="modal-background"></div>
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <p className="modal-card-title">Adicionar legislação</p>
             <button
               onClick={closeModal}
-              class="delete"
+              className="delete"
               aria-label="close"
             ></button>
           </header>
-          <section class="modal-card-body">
+          <section className="modal-card-body">
             <div className="field is-horizontal">
               <div className="field-label is-normal">
                 <label className="label">Nº/Ref</label>
@@ -89,22 +89,22 @@ const Product = ({
                 {/* <!-- Left empty for spacing --> */}
               </div>
               <div className="field-body">
-                <div class="file has-name">
-                  <label class="file-label">
+                <div className="file has-name">
+                  <label className="file-label">
                     <input
                       onChange={handleFile}
-                      class="file-input"
+                      className="file-input"
                       type="file"
                       name="file"
                       accept="application/pdf"
                     />
-                    <span class="file-cta">
-                      <span class="file-icon">
-                        <i class="fas fa-upload"></i>
+                    <span className="file-cta">
+                      <span className="file-icon">
+                        <i className="fas fa-upload"></i>
                       </span>
-                      <span class="file-label">Carregar ficheiro…</span>
+                      <span className="file-label">Carregar ficheiro…</span>
                     </span>
-                    <span class="file-name">
+                    <span className="file-name">
                       {state.selectedFile && state.selectedFile.name}
                     </span>
                   </label>
@@ -113,7 +113,7 @@ const Product = ({
             </div>
             {state.loaded > 0 && (
               <progress
-                class="progress is-primary"
+                className="progress is-primary"
                 value={state.loaded}
                 max="100"
               >
@@ -121,15 +121,15 @@ const Product = ({
               </progress>
             )}
           </section>
-          <footer class="modal-card-foot">
-            <button disabled={isDisabled} class="button is-warning">
+          <footer className="modal-card-foot">
+            <button disabled={isDisabled} className="button is-warning">
               Adicionar
             </button>
             {state.loaded === 0 && (
               <button
                 onClick={closeModal}
                 type="button"
-                class="button is-danger"
+                className="button is-danger"
               >
                 Cancelar
               </button>

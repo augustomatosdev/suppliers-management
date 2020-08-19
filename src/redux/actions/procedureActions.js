@@ -116,3 +116,80 @@ export const getProcedureDocuments = (firebase, procedureId, history) => (
       history.push(`/procedures/${procedureId}`);
     });
 };
+
+export const deleteProcedure = (firebase, procedureId, history) => (
+  dispatch
+) => {
+  dispatch({ type: LOADING_DATA });
+  const document = firebase.db.doc(`/procedures/${procedureId}`);
+  document
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        return alert("Este fornecedor já foi eliminado!");
+      } else {
+        return document.delete();
+      }
+    })
+    .then(() => {
+      alert("Documento eliminado com sucesso!");
+      dispatch(getAllProcedures(firebase));
+      history.push("/procedures");
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err,
+      });
+    });
+};
+export const updateProcedure = (
+  firebase,
+  procedureId,
+  history,
+  procedureData
+) => (dispatch) => {
+  dispatch({ type: LOADING_DATA });
+  firebase.db
+    .doc(`/procedures/${procedureId}`)
+    .update(procedureData)
+    .then(() => {
+      alert("Actualização feita com sucesso!");
+      history.push(`/procedures/${procedureId}`);
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err,
+      });
+    });
+};
+
+export const deleteDocument = (firebase, documentId, procedureId, history) => (
+  dispatch
+) => {
+  dispatch({ type: LOADING_DATA });
+  const document = firebase.db.doc(`/documents/${documentId}`);
+  document
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        return alert("Este documento já foi eliminado!");
+      } else {
+        return document.delete();
+      }
+    })
+    .then(() => {
+      alert("Documento eliminado com sucesso!");
+      dispatch(getProcedureDocuments(firebase, procedureId, history));
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: SET_ERRORS,
+        payload: err,
+      });
+    });
+};

@@ -16,12 +16,9 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/HomeRounded";
-import ProductsIcon from "@material-ui/icons/LocalGroceryStoreRounded";
 import BusinessIcon from "@material-ui/icons/BusinessCenter";
 import store from "../redux/store";
 import { logoutUser } from "../redux/actions/userActions";
@@ -113,6 +110,9 @@ const Layout = (props) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const user = useSelector((state) => state.user.credentials);
+  const userPermission = useSelector(
+    (state) => state.user.credentials.permission
+  );
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -162,7 +162,7 @@ const Layout = (props) => {
         }}
       >
         <div className={classes.drawerHeader}>
-          <figure class="image is-48x48">
+          <figure className="image is-48x48">
             <img src={Logo} />
           </figure>
           <h1 className="title has-text-weight-bold is-size-5 is-marginless has-text-white">
@@ -204,13 +204,13 @@ const Layout = (props) => {
             </ListItemIcon>
             <ListItemText primary="Contratos" />
           </ListItem>
-          <ListItem button component={Link} to="/contracts">
+          <ListItem button component={Link} to="/agreements">
             <ListItemIcon className={classes.listIcon}>
               <span className="icon">
                 <i className="fas fa-lg fa-handshake"></i>
               </span>
             </ListItemIcon>
-            <ListItemText primary="Acordo-Quadro" />
+            <ListItemText primary="Acordos-Quadros" />
           </ListItem>
           <ListItem button component={Link} to="/procedures">
             <ListItemIcon className={classes.listIcon}>
@@ -220,17 +220,21 @@ const Layout = (props) => {
           </ListItem>
         </List>
 
-        <Divider className={classes.divider} />
-        <List>
-          <ListItem button component={Link} to="/signup-user">
-            <ListItemIcon className={classes.listIcon}>
-              <span className="icon">
-                <i className="fas fa-lg fa-users"></i>
-              </span>
-            </ListItemIcon>
-            <ListItemText primary="Usuarios" />
-          </ListItem>
-        </List>
+        {userPermission === 1 && (
+          <>
+            <Divider className={classes.divider} />
+            <List>
+              <ListItem button component={Link} to="/users">
+                <ListItemIcon className={classes.listIcon}>
+                  <span className="icon">
+                    <i className="fas fa-lg fa-users"></i>
+                  </span>
+                </ListItemIcon>
+                <ListItemText primary="Usuarios" />
+              </ListItem>
+            </List>
+          </>
+        )}
       </Drawer>
       <main
         className={clsx(classes.content, {

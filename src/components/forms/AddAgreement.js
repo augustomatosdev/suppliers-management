@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const AddContract = ({
+const AddAgreement = ({
   state,
   handleChange,
   handleSubmit,
@@ -25,7 +25,7 @@ const AddContract = ({
                 required
                 className="input"
                 type="text"
-                placeholder="Numero ou referencia do contrato"
+                placeholder="Numero ou referencia do acordo-quadro"
                 name="reference"
                 value={state.reference}
                 onChange={handleChange}
@@ -74,7 +74,7 @@ const AddContract = ({
                   required
                   className="input"
                   type="number"
-                  placeholder="Valor do contrato"
+                  placeholder="Valor do acordo-quadro"
                   name="price"
                   value={state.price}
                   onChange={handleChange}
@@ -136,7 +136,7 @@ const AddContract = ({
                 value={state.objective}
                 onChange={handleChange}
                 className="textarea"
-                placeholder="Objecto do contrato"
+                placeholder="Objecto do acordo-quadro"
               ></textarea>
             </div>
           </div>
@@ -154,7 +154,7 @@ const AddContract = ({
                 value={state.obs}
                 onChange={handleChange}
                 className="textarea"
-                placeholder="Observações sobre o contrato"
+                placeholder="Observações sobre o acordo-quadro"
               ></textarea>
             </div>
           </div>
@@ -203,7 +203,7 @@ const AddContract = ({
                 Cadastrar
               </button>
             </div>
-            <Link to="/contracts" className="button is-danger">
+            <Link to="/agreements" className="button is-danger">
               Cancelar
             </Link>
           </div>
@@ -213,4 +213,4 @@ const AddContract = ({
   );
 };
 
-export default AddContract;
+export default AddAgreement;

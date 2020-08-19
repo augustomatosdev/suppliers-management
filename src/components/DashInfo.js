@@ -12,6 +12,9 @@ const DashInfo = (props) => {
   const contracts = useSelector((state) => state.data.contracts);
   const procedures = useSelector((state) => state.data.procedures);
   const users = useSelector((state) => state.data.users);
+  const userPermission = useSelector(
+    (state) => state.user.credentials.permission
+  );
   useEffect(() => {
     if (suppliers.length === 0) {
       store.dispatch(getAllSuppliers(props.firebase));
@@ -100,7 +103,7 @@ const DashInfo = (props) => {
               <div className="level-item">
                 <div>
                   <Link
-                    to="/contracts"
+                    to="/procedures"
                     className="heading has-text-weight-bold"
                   >
                     Ver todos
@@ -123,14 +126,15 @@ const DashInfo = (props) => {
             </div>
             <div className="level">
               <div className="level-item">
-                <div>
-                  <Link
-                    to="/contracts"
-                    className="heading has-text-weight-bold"
-                  >
-                    Ver todos
-                  </Link>
-                </div>
+                {userPermission === 1 ? (
+                  <div>
+                    <Link to="/users" className="heading has-text-weight-bold">
+                      Ver todos
+                    </Link>
+                  </div>
+                ) : (
+                  <p>&nbsp;</p>
+                )}
               </div>
             </div>
           </div>

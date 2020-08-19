@@ -7,7 +7,6 @@ import { withFirebase } from "../components/Firebase";
 
 const NewSupplier = (props) => {
   const suppliers = useSelector((state) => state.data.suppliers);
-  console.log(suppliers);
   const [state, setState] = useState({
     name: "",
     nif: "",

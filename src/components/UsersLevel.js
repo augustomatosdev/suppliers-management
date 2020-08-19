@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ContractsLevel = () => {
+const UsersLevel = () => {
   return (
     <nav className="level is-mobile">
       <div className="level-left">
         <div className="level-item">
           <p className="subtitle is-5">
             <Link
-              to="/contracts/new"
+              to="/users/new"
               type="submit"
               className="button is-small is-warning"
             >
@@ -26,4 +26,4 @@ const ContractsLevel = () => {
   );
 };
 
-export default ContractsLevel;
+export default UsersLevel;

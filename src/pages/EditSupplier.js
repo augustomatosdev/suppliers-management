@@ -13,7 +13,6 @@ import UpdateSupplier from "../components/forms/UpdateSupplier";
 const EditSupplier = (props) => {
   const supplier = useSelector((state) => state.data.supplier);
   const supplierId = props.match.params.supplierId;
-
   const [state, setState] = useState({});
   useEffect(() => {
     store.dispatch(getSupplier(props.firebase, supplierId, props.history));
@@ -48,7 +47,6 @@ const EditSupplier = (props) => {
       updateSupplier(props.firebase, supplierId, props.history, state)
     );
   };
-  console.log(state);
 
   return (
     <div>

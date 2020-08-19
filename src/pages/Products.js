@@ -149,7 +149,7 @@ const Products = (props) => {
             ? legislations.map((legis) => {
                 return (
                   <>
-                    <div className="card">
+                    <div className="card" key={legis.legislationId}>
                       <div className="card-content">
                         <div className="level is-mobile">
                           <div className="level-left">
@@ -167,7 +167,7 @@ const Products = (props) => {
                             <div className="level-item">
                               <span
                                 style={{ cursor: "pointer" }}
-                                class="icon is-small has-text-danger"
+                                className="icon is-small has-text-danger"
                                 onClick={() =>
                                   store.dispatch(
                                     deleteLegislation(
@@ -177,7 +177,7 @@ const Products = (props) => {
                                   )
                                 }
                               >
-                                <i class="fas fa-trash"></i>
+                                <i className="fas fa-trash"></i>
                               </span>
                             </div>
                           </div>

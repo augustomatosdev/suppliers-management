@@ -21,17 +21,17 @@ const ProductsLevel = ({ openModal, handleSearch }) => {
       </div>
 
       <div className="level-right">
-        <div class="field has-addons">
-          <div class="control">
+        <div className="field has-addons">
+          <div className="control">
             <input
-              class="input"
+              className="input"
               type="text"
               placeholder="Procurar legislação"
               onChange={handleSearch}
             />
           </div>
-          <div class="control">
-            <a class="button is-warning">Procurar</a>
+          <div className="control">
+            <a className="button is-warning">Procurar</a>
           </div>
         </div>
       </div>

@@ -10,7 +10,9 @@ import { getAllProcedures } from "../redux/actions/procedureActions";
 
 const Procedures = (props) => {
   const procedures = useSelector((state) => state.data.procedures);
-  console.log(procedures);
+  const userPermission = useSelector(
+    (state) => state.user.credentials.permission
+  );
 
   useEffect(() => {
     if (procedures.length === 0) {
@@ -20,7 +22,8 @@ const Procedures = (props) => {
 
   return (
     <div>
-      <ProceduresLevel />
+      {userPermission === 1 || (userPermission === 2 && <ProceduresLevel />)}
+
       <div className="columns is-centered">
         <div className="column">
           <h1 className="title has-text-centered">LISTA DE PROCEDIMENTOS</h1>

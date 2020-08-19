@@ -10,19 +10,28 @@ import { SET_AUTHENTICATED } from "./redux/types";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import UnAuthRoute from "./utils/UnAuthRoute";
 import Signup from "./pages/Signup";
-import Contracts from "./pages/Contracts";
 import Suppliers from "./pages/Suppliers";
 import Products from "./pages/Products";
 import NewSupplier from "./pages/NewSupplier";
 import NewProduct from "./pages/NewProduct";
 import AuthRoute from "./utils/AuthRoute";
-import NewContract from "./pages/NewContract";
 import NewProcedure from "./pages/NewProcedure";
+import Contracts from "./pages/Contracts";
 import Contract from "./pages/Contract";
+import NewContract from "./pages/NewContract";
+import EditContract from "./pages/EditContract";
+
+import Agreements from "./pages/Agreements";
+import Agreement from "./pages/Agreement";
+import NewAgreement from "./pages/NewAgreement";
+import EditAgreement from "./pages/EditAgreement";
+
 import Supplier from "./pages/Supplier";
 import Procedures from "./pages/Procedures";
 import Procedure from "./pages/Procedure";
 import EditSupplier from "./pages/EditSupplier";
+import EditProcedure from "./pages/EditProcedure";
+import Users from "./pages/Users";
 
 //MUi Theme settings
 const theme = createMuiTheme({
@@ -79,6 +88,23 @@ function App(props) {
             path="/contracts/:contractId"
             component={Contract}
           />
+          <UnAuthRoute
+            exact
+            path="/contracts/edit/:contractId"
+            component={EditContract}
+          />
+          <UnAuthRoute exact path="/agreements" component={Agreements} />
+          <UnAuthRoute exact path="/agreements/new" component={NewAgreement} />
+          <UnAuthRoute
+            exact
+            path="/agreements/:agreementId"
+            component={Agreement}
+          />
+          <UnAuthRoute
+            exact
+            path="/agreements/edit/:agreementId"
+            component={EditAgreement}
+          />
           <UnAuthRoute exact path="/suppliers" component={Suppliers} />
           <UnAuthRoute exact path="/suppliers/new" component={NewSupplier} />
           <UnAuthRoute
@@ -100,7 +126,13 @@ function App(props) {
             path="/procedures/:procedureId"
             component={Procedure}
           />
-          <UnAuthRoute exact path="/signup-user" component={Signup} />
+          <UnAuthRoute
+            exact
+            path="/procedures/edit/:procedureId"
+            component={EditProcedure}
+          />
+          <UnAuthRoute exact path="/users" component={Users} />
+          <UnAuthRoute exact path="/users/new" component={Signup} />
           <AuthRoute exact path="/signin" component={Signin} />
         </Switch>
       </BrowserRouter>

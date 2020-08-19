@@ -2,36 +2,37 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import store from "../redux/store";
 import {
-  getSupplierDocuments,
-  getSupplier,
-  deleteSupplier,
-  deleteDocument,
-} from "../redux/actions/dataActions";
+  getAgreement,
+  getAgreementBills,
+  deleteAgreement,
+} from "../redux/actions/agreementsActions";
 import { withFirebase } from "../components/Firebase";
 import { Link } from "react-router-dom";
-import SupplierModal from "../components/modals/Supplier";
+import AgreementModal from "../components/modals/Agreement";
 import Loading from "../components/Loading";
 import { LOADING_DATA } from "../redux/types";
 
-const Supplier = (props) => {
-  const supplier = useSelector((state) => state.data.supplier);
-  const documents = useSelector((state) => state.data.documents);
-  const supplierId = props.match.params.supplierId;
+const Agreement = (props) => {
+  const agreement = useSelector((state) => state.data.agreement);
+  const agreementId = props.match.params.agreementId;
+  const bills = useSelector((state) => state.data.bills);
   const loading = useSelector((state) => state.UI.loading);
   const userPermission = useSelector(
     (state) => state.user.credentials.permission
   );
   const [state, setState] = useState({
     description: "",
+    price: "",
     date: "",
+    link: null,
     selectedFile: null,
     loaded: 0,
     modal: false,
   });
   useEffect(() => {
-    store.dispatch(getSupplier(props.firebase, supplierId, props.history));
+    store.dispatch(getAgreement(props.firebase, agreementId, props.history));
     store.dispatch(
-      getSupplierDocuments(props.firebase, supplierId, props.history)
+      getAgreementBills(props.firebase, agreementId, props.history)
     );
   }, []);
 
@@ -41,12 +42,15 @@ const Supplier = (props) => {
   const closeModal = () => {
     setState({
       description: "",
+      price: "",
       date: "",
+      link: null,
       selectedFile: null,
       loaded: 0,
       modal: false,
     });
   };
+
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
@@ -60,7 +64,9 @@ const Supplier = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     store.dispatch({ type: LOADING_DATA });
+
     const file = state.selectedFile;
+
     const imageExtension = file.name.split(".")[
       file.name.split(".").length - 1
     ];
@@ -72,7 +78,7 @@ const Supplier = (props) => {
       contentType: "application/pdf",
     };
     const uploadTask = props.firebase.storage
-      .ref(`/documents/${imageFileName}`)
+      .ref(`/bills/${imageFileName}`)
       .put(file, metadata);
     uploadTask.on(
       props.firebase.storageBase.TaskEvent.STATE_CHANGED,
@@ -87,41 +93,53 @@ const Supplier = (props) => {
         uploadTask.snapshot.ref
           .getDownloadURL()
           .then((downloadURL) => {
-            const newDocument = {
+            const newBill = {
               description: state.description,
+              price: state.price,
               date: state.date,
-              supplierId,
+              agreementId,
               link: downloadURL,
             };
-            return props.firebase.db.collection("documents").add(newDocument);
+            return props.firebase.db.collection("bills").add(newBill);
           })
           .then((doc) => {
-            alert(`Documento #${state.description} adicionado com sucesso!`);
+            return props.firebase.db.doc(`/agreements/${agreementId}`).update({
+              toPay: Number(agreement.toPay) - Number(state.price),
+              paid: Number(agreement.paid) + Number(state.price),
+            });
+          })
+          .then(() => {
+            alert(`Factura #${state.description} adicionado com sucesso!`);
             closeModal();
             store.dispatch(
-              getSupplierDocuments(props.firebase, supplierId, props.history)
+              getAgreement(props.firebase, agreementId, props.history)
+            );
+            store.dispatch(
+              getAgreementBills(props.firebase, agreementId, props.history)
             );
           });
       }
     );
   };
+
   return (
-    <>
-      <SupplierModal
+    <div>
+      <AgreementModal
         handleChange={handleChange}
         handleFile={handleFile}
         state={state}
-        supplier={supplier}
+        agreement={agreement}
         closeModal={closeModal}
         handleSubmit={handleSubmit}
       />
       {userPermission === 1 && (
-        <div className="level is-mobile">
+        <div className="level">
           <div className="level-left"></div>
           <div className="level-right">
             <div className="level-item">
               <Link
-                to={`/suppliers/edit/${supplierId}`}
+                to={`/agreements/edit/${agreementId}`}
+                style={{ cursor: "pointer" }}
                 className="icon is-small has-text-warning"
               >
                 <i className="fas fa-lg fa-edit"></i>
@@ -134,7 +152,7 @@ const Supplier = (props) => {
                 className="icon is-small has-text-danger"
                 onClick={() => {
                   store.dispatch(
-                    deleteSupplier(props.firebase, supplierId, props.history)
+                    deleteAgreement(props.firebase, agreementId, props.history)
                   );
                 }}
               >
@@ -144,72 +162,72 @@ const Supplier = (props) => {
           </div>
         </div>
       )}
-
-      {loading ? (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Loading />
-        </div>
-      ) : (
-        <div className="columns is-centered">
+      <div className="columns is-centered">
+        {loading ? (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Loading />
+          </div>
+        ) : (
           <div className="column is-8">
-            <h1 className="is-title  is-size-2 has-text-link">
-              {supplier.name}
+            <h1 className="is-title  is-size-3 has-text-link">
+              {agreement.objective}
             </h1>
             <p className="is-size-5">
-              <strong>Produto/Serviço: </strong>
-              {supplier.description}
+              <strong>Número/Ref.: </strong>
+              {agreement.reference}
             </p>
             <p className="is-size-5">
-              <strong>NIF: </strong>
-              {supplier.nif}
+              <strong>Data de realização: </strong>
+              {agreement.date}
             </p>
             <p className="is-size-5">
-              <strong>Endereço: </strong>
-              {supplier.address
-                ? `${supplier.address.street}, ${supplier.address.municipalty}, ${supplier.address.province}`
-                : ""}
+              <strong>Observações: </strong>
+              {agreement.obs}
             </p>
-            {supplier.contacts && (
-              <>
-                <p className="is-size-5">
-                  <strong>Contactos: </strong>
-                  {supplier.contacts.phone1}, {supplier.contacts.phone2}
-                </p>
-                <p className="is-size-5">
-                  <strong>Email: </strong>
-                  {supplier.contacts.email}
-                </p>{" "}
-              </>
-            )}
             <p className="is-size-5">
-              <strong>Inicio de vinculo: </strong>
-              {supplier.date}
+              <strong>Valor do contrato: </strong>
+              {agreement.price && `Akz: ${agreement.price},00`}
             </p>
-            {supplier.manager && (
-              <>
-                {" "}
-                <p className="is-size-5">
-                  <strong>Responsável: </strong>
-                  {supplier.manager.fullName}
-                </p>
-                <p className="is-size-5">
-                  <strong>B.I/Responsável: </strong>
-                  {supplier.manager.idCard}
-                </p>{" "}
-              </>
-            )}
-
+            <p className="is-size-5">
+              <strong>Valor pago: </strong>
+              {`Akz: ${agreement.paid},00`}
+            </p>
+            <p className="is-size-5">
+              <strong>Valor por pagar: </strong>
+              {`Akz: ${agreement.toPay},00`}
+            </p>
+            <p className="is-size-5">
+              <strong>Estado: </strong>
+              {agreement.status === "active" ? "Activo" : "Terminado"}
+            </p>
+            <br />
+            <div className="is-grouped">
+              <a
+                href={agreement.link}
+                target="_blank"
+                className="button is-link"
+              >
+                Baixar cópia
+              </a>
+              &nbsp; &nbsp;
+              <Link
+                to={`/suppliers/${agreement.supplier}`}
+                className="button is-success"
+              >
+                Ver empresa
+              </Link>
+            </div>
             <br />
             <br />
             <article className="message">
               <div className="message-header">
-                <p>Documentos </p>
+                <p>Pagamentos </p>
                 <button onClick={openModal} className="button is-small">
                   <span className="icon is-small">
                     <i className="fas fa-plus"></i>
@@ -218,11 +236,11 @@ const Supplier = (props) => {
                 </button>
               </div>
               <div className="message-body">
-                {documents.length > 0 ? (
-                  documents.map((document) => (
-                    <div key={document.documentId} className="level">
+                {bills.length > 0 ? (
+                  bills.map((bill) => (
+                    <div key={bill.billId} className="level">
                       <a
-                        href={document.link}
+                        href={bill.link}
                         target="_blank"
                         className="has-text-link"
                       >
@@ -230,39 +248,22 @@ const Supplier = (props) => {
                           <i className="fas fa-2x fa-file-alt"></i>
                         </span>
                       </a>
-                      <p>{`${document.description}`}</p>
-                      <p>
-                        {document.date}{" "}
-                        <span
-                          style={{ cursor: "pointer" }}
-                          onClick={() => {
-                            store.dispatch(
-                              deleteDocument(
-                                props.firebase,
-                                document.documentId,
-                                supplierId,
-                                props.history
-                              )
-                            );
-                          }}
-                          className="icon is-small has-text-danger"
-                        >
-                          <i className="fas fa-trash"></i>
-                        </span>
-                      </p>
+                      <p>{`${bill.description}`}</p>
+                      <p>{bill.date} </p>
                     </div>
                   ))
                 ) : (
                   <p className="has-text-danger">
-                    Não existem documentos para este fornecedor!
+                    Não existem pagamentos registados para este contrato!
                   </p>
                 )}
               </div>
             </article>
           </div>
-        </div>
-      )}
-    </>
+        )}
+      </div>
+    </div>
   );
 };
-export default withFirebase(Supplier);
+
+export default withFirebase(Agreement);

@@ -5,7 +5,6 @@ import Layout from "./Layout";
 
 const UnAuthRoute = ({ component: Component, ...rest }) => {
   const authenticated = useSelector((state) => state.user.authenticated);
-  console.log(authenticated);
 
   return (
     <Route

@@ -17,9 +17,13 @@ import {
   SET_LEGISLATIONS,
   SET_USERS,
   STOP_LOADING_DATA,
+  SET_AGREEMENTS,
+  SET_AGREEMENT,
 } from "../types";
 
 const initialState = {
+  agreement: {},
+  agreements: [],
   users: [],
   legislations: [],
   procedures: [],
@@ -96,6 +100,19 @@ export default function (state = initialState, action) {
       return {
         ...state,
         contract: action.payload,
+        loading: false,
+      };
+
+    case SET_AGREEMENTS:
+      return {
+        ...state,
+        agreements: action.payload,
+        loading: false,
+      };
+    case SET_AGREEMENT:
+      return {
+        ...state,
+        agreement: action.payload,
         loading: false,
       };
     case SET_BILLS:

@@ -22,7 +22,6 @@ const NewProduct = (props) => {
     setState({ type: "", name: "" });
   };
 
-  console.log(products);
   return (
     <div className="columns is-centered">
       <div className="column is-6">

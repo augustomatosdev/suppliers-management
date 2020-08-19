@@ -10,6 +10,9 @@ import { withFirebase } from "../components/Firebase";
 const Contracts = (props) => {
   const contracts = useSelector((state) => state.data.contracts);
   const suppliers = useSelector((state) => state.data.suppliers);
+  const userPermission = useSelector(
+    (state) => state.user.credentials.permission
+  );
 
   useEffect(() => {
     if (contracts.length === 0) {
@@ -28,7 +31,8 @@ const Contracts = (props) => {
   });
   return (
     <div>
-      <ContractsLevel />
+      {userPermission === 1 || (userPermission === 2 && <ContractsLevel />)}
+
       <div className="columns is-centered">
         <div className="column">
           <h1 className="title has-text-centered">LISTA DE CONTRATOS</h1>

@@ -135,6 +135,7 @@ export default function SignupForm({ state, handleChange, handleSubmit }) {
             >
               <MenuItem value={1}>Nivel 1</MenuItem>
               <MenuItem value={2}>Nivel 2</MenuItem>
+              <MenuItem value={3}>Nivel 3</MenuItem>
             </Select>
           </FormControl>
           <p className="has-text-danger is-size-7">

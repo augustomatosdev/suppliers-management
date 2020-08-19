@@ -8,7 +8,9 @@ import { withFirebase } from "../components/Firebase";
 
 const Suppliers = (props) => {
   const suppliers = useSelector((state) => state.data.suppliers);
-  console.log(suppliers);
+  const userPermission = useSelector(
+    (state) => state.user.credentials.permission
+  );
 
   useEffect(() => {
     if (suppliers.length === 0) {
@@ -18,7 +20,8 @@ const Suppliers = (props) => {
 
   return (
     <div>
-      <Level />
+      {userPermission === 1 || (userPermission === 2 && <Level />)}
+
       <div className="columns is-centered">
         <div className="column">
           <h1 className="title has-text-centered">

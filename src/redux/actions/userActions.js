@@ -7,6 +7,7 @@ import {
   LOADING_USER,
   MARK_NOTIFICATIONS_READ,
   SET_USERS,
+  LOADING_DATA,
 } from "../types";
 import { validateSignupData, validateLoginData } from "../../utils/validators";
 import { config } from "../../components/Firebase/config";
@@ -34,7 +35,7 @@ export const signupUser = (newUserData, firebase, history) => (dispatch) => {
     })
     .then((data) => {
       alert("Novo usuario cadastrado com sucesso!");
-      history.push("/system/users");
+      history.push("/");
     })
     .catch((err) => {
       if (err.code === "auth/email-already-in-use") {

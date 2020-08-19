@@ -6,26 +6,28 @@ import {
   SET_BILLS,
   LOADING_UI,
   STOP_LOADING_UI,
+  SET_AGREEMENT,
+  SET_AGREEMENTS,
 } from "../types";
 
-export const getAllContracts = (firebase) => (dispatch) => {
+export const getAllAgreements = (firebase) => (dispatch) => {
   dispatch({ type: LOADING_DATA });
 
   firebase.db
-    .collection("contracts")
+    .collection("agreements")
     .orderBy("date", "desc")
     .get()
     .then((data) => {
-      let contracts = [];
+      let agreements = [];
       data.forEach((doc) => {
-        contracts.push({
+        agreements.push({
           ...doc.data(),
-          contractId: doc.id,
+          agreementId: doc.id,
         });
       });
       dispatch({
-        type: SET_CONTRACTS,
-        payload: contracts,
+        type: SET_AGREEMENTS,
+        payload: agreements,
       });
     })
     .catch((err) => {
@@ -37,19 +39,19 @@ export const getAllContracts = (firebase) => (dispatch) => {
     });
 };
 
-export const getContract = (firebase, contractId, history) => (dispatch) => {
+export const getAgreement = (firebase, agreementId, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   firebase.db
-    .doc(`/contracts/${contractId}`)
+    .doc(`/agreements/${agreementId}`)
     .get()
     .then((doc) => {
       if (!doc.exists) {
-        alert("Este contrato nao existe ou deve ter sido apagado!");
-        return history.push("/contracts");
+        alert("Este acordo-quadro nao existe ou deve ter sido apagado!");
+        return history.push("/agreements");
       }
       dispatch({
-        type: SET_CONTRACT,
-        payload: { ...doc.data(), contractId: doc.id },
+        type: SET_AGREEMENT,
+        payload: { ...doc.data(), agreementId: doc.id },
       });
       dispatch({
         type: STOP_LOADING_UI,
@@ -58,18 +60,18 @@ export const getContract = (firebase, contractId, history) => (dispatch) => {
     .catch((err) => {
       console.log(err);
       alert("Ocorreu um erro desconhecido, tente novamente");
-      history.push("/contracts");
+      history.push("/agreements");
     });
 };
 
-export const getContractBills = (firebase, contractId, history) => (
+export const getAgreementBills = (firebase, agreementId, history) => (
   dispatch
 ) => {
   dispatch({ type: LOADING_DATA });
 
   firebase.db
     .collection("bills")
-    .where("contractId", "==", contractId)
+    .where("agreementId", "==", agreementId)
     .orderBy("date", "desc")
     .get()
     .then((data) => {
@@ -88,13 +90,15 @@ export const getContractBills = (firebase, contractId, history) => (
     .catch((err) => {
       console.log(err);
       alert("Ocorreu um erro desconhecido, tente novamente");
-      history.push(`/contracts/${contractId}`);
+      history.push(`/agreements/${agreementId}`);
     });
 };
 
-export const deleteContract = (firebase, contractId, history) => (dispatch) => {
+export const deleteAgreement = (firebase, agreementId, history) => (
+  dispatch
+) => {
   dispatch({ type: LOADING_DATA });
-  const document = firebase.db.doc(`/contracts/${contractId}`);
+  const document = firebase.db.doc(`/agreements/${agreementId}`);
   document
     .get()
     .then((doc) => {
@@ -106,8 +110,8 @@ export const deleteContract = (firebase, contractId, history) => (dispatch) => {
     })
     .then(() => {
       alert("Documento eliminado com sucesso!");
-      dispatch(getAllContracts(firebase));
-      history.push("/contracts");
+      dispatch(getAllAgreements(firebase));
+      history.push("/agreements");
     })
     .catch((err) => {
       console.log(err);
@@ -118,16 +122,19 @@ export const deleteContract = (firebase, contractId, history) => (dispatch) => {
     });
 };
 
-export const updateContract = (firebase, contractId, history, contractData) => (
-  dispatch
-) => {
+export const updateAgreement = (
+  firebase,
+  agreementId,
+  history,
+  agreementData
+) => (dispatch) => {
   dispatch({ type: LOADING_DATA });
   firebase.db
-    .doc(`/contracts/${contractId}`)
-    .update(contractData)
+    .doc(`/agreements/${agreementId}`)
+    .update(agreementData)
     .then(() => {
       alert("Actualização feita com sucesso!");
-      history.push(`/contracts/${contractId}`);
+      history.push(`/agreements/${agreementId}`);
     })
     .catch((err) => {
       console.log(err);

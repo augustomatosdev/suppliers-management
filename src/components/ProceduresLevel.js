@@ -21,17 +21,7 @@ const ProceduresLevel = () => {
         </div>
       </div>
 
-      <div className="level-right">
-        <p className="level-item">
-          <a>Published</a>
-        </p>
-        <p className="level-item">
-          <a>Drafts</a>
-        </p>
-        <p className="level-item">
-          <a>Deleted</a>
-        </p>
-      </div>
+      <div className="level-right"></div>
     </nav>
   );
 };

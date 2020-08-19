@@ -17,6 +17,9 @@ const Contract = (props) => {
   const contractId = props.match.params.contractId;
   const bills = useSelector((state) => state.data.bills);
   const loading = useSelector((state) => state.UI.loading);
+  const userPermission = useSelector(
+    (state) => state.user.credentials.permission
+  );
   const [state, setState] = useState({
     description: "",
     price: "",
@@ -116,7 +119,6 @@ const Contract = (props) => {
       }
     );
   };
-  console.log(state);
 
   return (
     <div>
@@ -128,33 +130,36 @@ const Contract = (props) => {
         closeModal={closeModal}
         handleSubmit={handleSubmit}
       />
-      <div className="level">
-        <div className="level-left"></div>
-        <div className="level-right">
-          <div className="level-item">
-            <span
-              style={{ cursor: "pointer" }}
-              class="icon is-small has-text-warning"
-            >
-              <i class="fas fa-lg fa-edit"></i>
-            </span>
-          </div>
-          <div className="level-item"></div>
-          <div className="level-item">
-            <span
-              style={{ cursor: "pointer" }}
-              class="icon is-small has-text-danger"
-              onClick={() => {
-                store.dispatch(
-                  deleteContract(props.firebase, contractId, props.history)
-                );
-              }}
-            >
-              <i class="fas fa-lg fa-trash"></i>
-            </span>
+      {userPermission === 1 && (
+        <div className="level">
+          <div className="level-left"></div>
+          <div className="level-right">
+            <div className="level-item">
+              <Link
+                to={`/contracts/edit/${contractId}`}
+                style={{ cursor: "pointer" }}
+                className="icon is-small has-text-warning"
+              >
+                <i className="fas fa-lg fa-edit"></i>
+              </Link>
+            </div>
+            <div className="level-item"></div>
+            <div className="level-item">
+              <span
+                style={{ cursor: "pointer" }}
+                className="icon is-small has-text-danger"
+                onClick={() => {
+                  store.dispatch(
+                    deleteContract(props.firebase, contractId, props.history)
+                  );
+                }}
+              >
+                <i className="fas fa-lg fa-trash"></i>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <div className="columns is-centered">
         {loading ? (
           <div
@@ -168,7 +173,7 @@ const Contract = (props) => {
           </div>
         ) : (
           <div className="column is-8">
-            <h1 className="is-title  is-size-2 has-text-link">
+            <h1 className="is-title  is-size-3 has-text-link">
               {contract.objective}
             </h1>
             <p className="is-size-5">
@@ -218,36 +223,31 @@ const Contract = (props) => {
             </div>
             <br />
             <br />
-            <article class="message">
-              <div class="message-header">
+            <article className="message">
+              <div className="message-header">
                 <p>Pagamentos </p>
-                <button onClick={openModal} class="button is-small">
-                  <span class="icon is-small">
-                    <i class="fas fa-plus"></i>
+                <button onClick={openModal} className="button is-small">
+                  <span className="icon is-small">
+                    <i className="fas fa-plus"></i>
                   </span>
                   <span>Adicionar</span>
                 </button>
               </div>
-              <div class="message-body">
+              <div className="message-body">
                 {bills.length > 0 ? (
                   bills.map((bill) => (
-                    <div className="level">
+                    <div key={bill.billId} className="level">
                       <a
                         href={bill.link}
                         target="_blank"
                         className="has-text-link"
                       >
-                        <span class="icon is-small">
-                          <i class="fas fa-2x fa-file-alt"></i>
+                        <span className="icon is-small">
+                          <i className="fas fa-2x fa-file-alt"></i>
                         </span>
                       </a>
                       <p>{`${bill.description}`}</p>
-                      <p>
-                        {bill.date}{" "}
-                        <span class="icon is-small has-text-danger">
-                          <i class="fas fa-trash"></i>
-                        </span>
-                      </p>
+                      <p>{bill.date} </p>
                     </div>
                   ))
                 ) : (

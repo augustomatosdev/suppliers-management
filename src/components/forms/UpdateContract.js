@@ -2,16 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const AddContract = ({
+const UpdateContract = ({
   state,
   handleChange,
   handleSubmit,
   suppliers,
-  handleFile,
+  contractId,
 }) => {
   const loading = useSelector((state) => state.data.loading);
-  const isDisabled =
-    !state.supplier || !state.status || !state.selectedFile || state.loaded > 0;
   return (
     <form onSubmit={handleSubmit}>
       <div className="field is-horizontal">
@@ -27,7 +25,7 @@ const AddContract = ({
                 type="text"
                 placeholder="Numero ou referencia do contrato"
                 name="reference"
-                value={state.reference}
+                value={state.reference || ""}
                 onChange={handleChange}
               />
             </div>
@@ -42,7 +40,11 @@ const AddContract = ({
           <div className="field">
             <div className="control">
               <div className="select">
-                <select name="supplier" onChange={handleChange}>
+                <select
+                  name="supplier"
+                  value={state.supplier || ""}
+                  onChange={handleChange}
+                >
                   <option value="">Seleccione</option>
                   {suppliers.map((supplier) => (
                     <option
@@ -75,9 +77,8 @@ const AddContract = ({
                   className="input"
                   type="number"
                   placeholder="Valor do contrato"
-                  name="price"
-                  value={state.price}
-                  onChange={handleChange}
+                  value={state.price || ""}
+                  readOnly
                 />
               </p>
             </div>
@@ -98,7 +99,7 @@ const AddContract = ({
                 className="input"
                 type="date"
                 name="date"
-                value={state.date}
+                value={state.date || ""}
                 onChange={handleChange}
               />
             </div>
@@ -113,7 +114,11 @@ const AddContract = ({
           <div className="field">
             <div className="control">
               <div className="select">
-                <select name="status" onChange={handleChange}>
+                <select
+                  name="status"
+                  value={state.status || ""}
+                  onChange={handleChange}
+                >
                   <option value="">Seleccione</option>
                   <option value="active">Activo</option>
                   <option value="terminated">Terminado</option>
@@ -133,7 +138,7 @@ const AddContract = ({
               <textarea
                 required
                 name="objective"
-                value={state.objective}
+                value={state.objective || ""}
                 onChange={handleChange}
                 className="textarea"
                 placeholder="Objecto do contrato"
@@ -151,7 +156,7 @@ const AddContract = ({
             <div className="control">
               <textarea
                 name="obs"
-                value={state.obs}
+                value={state.obs || ""}
                 onChange={handleChange}
                 className="textarea"
                 placeholder="Observações sobre o contrato"
@@ -160,33 +165,7 @@ const AddContract = ({
           </div>
         </div>
       </div>
-      <div className="field is-horizontal">
-        <div className="field-label">
-          {/* <!-- Left empty for spacing --> */}
-        </div>
-        <div className="field-body">
-          <div className="file has-name">
-            <label className="file-label">
-              <input
-                onChange={handleFile}
-                className="file-input"
-                type="file"
-                name="file"
-                accept="application/pdf"
-              />
-              <span className="file-cta">
-                <span className="file-icon">
-                  <i className="fas fa-upload"></i>
-                </span>
-                <span className="file-label">Carregar ficheiro…</span>
-              </span>
-              <span className="file-name">
-                {state.selectedFile && state.selectedFile.name}
-              </span>
-            </label>
-          </div>
-        </div>
-      </div>
+
       <div className="field is-horizontal">
         <div className="field-label">
           {/* <!-- Left empty for spacing --> */}
@@ -195,15 +174,14 @@ const AddContract = ({
           <div className="field is-grouped">
             <div className="control">
               <button
-                disabled={isDisabled}
                 className={
                   loading ? "button is-warning is-loading" : "button is-warning"
                 }
               >
-                Cadastrar
+                Actualizar
               </button>
             </div>
-            <Link to="/contracts" className="button is-danger">
+            <Link to={`/contracts/${contractId}`} className="button is-danger">
               Cancelar
             </Link>
           </div>
@@ -213,4 +191,4 @@ const AddContract = ({
   );
 };
 
-export default AddContract;
+export default UpdateContract;

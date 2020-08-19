@@ -2,23 +2,26 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const Procedure = ({
+const Agreement = ({
   state,
   handleFile,
   handleChange,
   handleSubmit,
-  contract,
+  agreement,
   closeModal,
 }) => {
   const isDisabled = !state.selectedFile || state.loaded > 0;
   const loading = useSelector((state) => state.data.loading);
+
   return (
     <form onSubmit={handleSubmit}>
       <div className={state.modal ? "modal is-active" : "modal"}>
         <div className="modal-background"></div>
         <div className="modal-card">
           <header className="modal-card-head">
-            <p className="modal-card-title">Adicionar documento</p>
+            <p className="modal-card-title">
+              Adicionar factura - Acordo-Quadro #{agreement.reference}
+            </p>
             <button
               onClick={closeModal}
               className="delete"
@@ -43,6 +46,34 @@ const Procedure = ({
                       onChange={handleChange}
                     />
                   </div>
+                </div>
+              </div>
+            </div>
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <label className="label">Valor</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <div className="field has-addons">
+                    <p className="control">
+                      <a className="button is-static">Akz</a>
+                    </p>
+                    <p className="control is-expanded">
+                      <input
+                        required
+                        className="input"
+                        type="number"
+                        placeholder="Valor do contrato"
+                        name="price"
+                        value={state.price}
+                        onChange={handleChange}
+                      />
+                    </p>
+                  </div>
+                  <p className="help">
+                    Escreva o valor sem virgulas, nem pontos.
+                  </p>
                 </div>
               </div>
             </div>
@@ -127,4 +158,4 @@ const Procedure = ({
     </form>
   );
 };
-export default Procedure;
+export default Agreement;

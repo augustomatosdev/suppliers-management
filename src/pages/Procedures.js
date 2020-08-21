@@ -22,7 +22,11 @@ const Procedures = (props) => {
 
   return (
     <div>
-      {userPermission === 1 || (userPermission === 2 && <ProceduresLevel />)}
+      {userPermission === 1 || userPermission === 2 ? (
+        <ProceduresLevel />
+      ) : (
+        <></>
+      )}
 
       <div className="columns is-centered">
         <div className="column">

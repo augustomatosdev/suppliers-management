@@ -31,7 +31,11 @@ const Contracts = (props) => {
   });
   return (
     <div>
-      {userPermission === 1 || (userPermission === 2 && <ContractsLevel />)}
+      {userPermission === 1 || userPermission === 2 ? (
+        <ContractsLevel />
+      ) : (
+        <></>
+      )}
 
       <div className="columns is-centered">
         <div className="column">

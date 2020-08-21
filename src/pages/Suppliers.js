@@ -20,7 +20,7 @@ const Suppliers = (props) => {
 
   return (
     <div>
-      {userPermission === 1 || (userPermission === 2 && <Level />)}
+      {userPermission === 1 || userPermission === 2 ? <Level /> : <></>}
 
       <div className="columns is-centered">
         <div className="column">

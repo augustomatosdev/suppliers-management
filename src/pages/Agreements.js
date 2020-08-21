@@ -31,7 +31,11 @@ const Agreements = (props) => {
   });
   return (
     <div>
-      {userPermission === 1 || (userPermission === 2 && <AgreementsLevel />)}
+      {userPermission === 1 || userPermission === 2 ? (
+        <AgreementsLevel />
+      ) : (
+        <></>
+      )}
       <div className="columns is-centered">
         <div className="column">
           <h1 className="title has-text-centered">LISTA DE ACORDOS-QUADROS</h1>

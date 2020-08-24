@@ -59,7 +59,6 @@ const options = {
 };
 
 const ContractsTable = ({ data }) => {
-  console.log(data);
   const newArray = data.map((contract) => {
     return {
       "Nº/Ref.": contract.reference,

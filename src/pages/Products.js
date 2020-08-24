@@ -20,6 +20,9 @@ const Products = (props) => {
     loaded: 0,
     modal: false,
   });
+  const userPermission = useSelector(
+    (state) => state.user.credentials.permission
+  );
 
   const loading = useSelector((state) => state.data.loading);
 

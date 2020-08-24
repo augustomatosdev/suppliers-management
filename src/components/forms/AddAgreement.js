@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import store from "../../redux/store";
+import { STOP_LOADING_DATA } from "../../redux/types";
 
 const AddAgreement = ({
   state,
@@ -10,6 +12,7 @@ const AddAgreement = ({
   handleFile,
 }) => {
   const loading = useSelector((state) => state.data.loading);
+  let error = useSelector((state) => state.UI.errors);
   const isDisabled =
     !state.supplier || !state.status || !state.selectedFile || state.loaded > 0;
   return (
@@ -23,7 +26,7 @@ const AddAgreement = ({
             <div className="control">
               <input
                 required
-                className="input"
+                className={error.agreement ? "input is-danger" : "input"}
                 type="text"
                 placeholder="Numero ou referencia do acordo-quadro"
                 name="reference"
@@ -31,6 +34,9 @@ const AddAgreement = ({
                 onChange={handleChange}
               />
             </div>
+            {error.agreement && (
+              <p className="help is-danger">{error.agreement}</p>
+            )}
           </div>
         </div>
       </div>
@@ -187,6 +193,15 @@ const AddAgreement = ({
           </div>
         </div>
       </div>
+      {state.loaded > 0 && (
+        <progress
+          className="progress is-primary"
+          value={state.loaded}
+          max="100"
+        >
+          {state.loaded}%
+        </progress>
+      )}
       <div className="field is-horizontal">
         <div className="field-label">
           {/* <!-- Left empty for spacing --> */}
@@ -203,7 +218,11 @@ const AddAgreement = ({
                 Cadastrar
               </button>
             </div>
-            <Link to="/agreements" className="button is-danger">
+            <Link
+              to="/agreements"
+              className="button is-danger"
+              onClick={() => store.dispatch({ type: STOP_LOADING_DATA })}
+            >
               Cancelar
             </Link>
           </div>

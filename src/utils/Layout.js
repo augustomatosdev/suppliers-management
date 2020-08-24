@@ -25,6 +25,7 @@ import { logoutUser } from "../redux/actions/userActions";
 import { withFirebase } from "../components/Firebase";
 import GavelIcon from "@material-ui/icons/Gavel";
 import LowPriorityIcon from "@material-ui/icons/LowPriority";
+import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
 import Logo from "../assets/logo.png";
 
 const drawerWidth = 240;
@@ -189,6 +190,12 @@ const Layout = (props) => {
               <GavelIcon />
             </ListItemIcon>
             <ListItemText primary="Legislação" />
+          </ListItem>
+          <ListItem button component={Link} to="/financial/january">
+            <ListItemIcon className={classes.listIcon}>
+              <AccountBalanceWalletIcon />
+            </ListItemIcon>
+            <ListItemText primary="Execução Financeira" />
           </ListItem>
           <ListItem button component={Link} to="/suppliers">
             <ListItemIcon className={classes.listIcon}>

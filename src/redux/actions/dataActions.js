@@ -26,6 +26,7 @@ export const getAllUsers = (firebase) => (dispatch) => {
       data.forEach((doc) => {
         users.push({
           ...doc.data(),
+          userId: doc.id,
         });
       });
       dispatch({

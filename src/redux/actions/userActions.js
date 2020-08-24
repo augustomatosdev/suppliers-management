@@ -5,15 +5,14 @@ import {
   LOADING_UI,
   SET_UNAUTHENTICATED,
   LOADING_USER,
-  MARK_NOTIFICATIONS_READ,
-  SET_USERS,
-  LOADING_DATA,
 } from "../types";
 import { validateSignupData, validateLoginData } from "../../utils/validators";
 import { config } from "../../components/Firebase/config";
 import store from "../store";
 
-export const signupUser = (newUserData, firebase, history) => (dispatch) => {
+export const signupUser = (newUserData, firebase, history, admin) => (
+  dispatch
+) => {
   dispatch({ type: LOADING_UI });
 
   firebase.auth
@@ -33,9 +32,15 @@ export const signupUser = (newUserData, firebase, history) => (dispatch) => {
       };
       return firebase.db.collection("/users").add(userCredentials);
     })
+    .then(() => {
+      return firebase.auth.signInWithEmailAndPassword(
+        admin.email,
+        admin.password
+      );
+    })
     .then((data) => {
       alert("Novo usuario cadastrado com sucesso!");
-      history.push("/");
+      window.location.reload(false);
     })
     .catch((err) => {
       if (err.code === "auth/email-already-in-use") {
@@ -75,6 +80,32 @@ export const loginUser = (user, history, firebase) => (dispatch) => {
         type: SET_ERRORS,
         payload: { general: "Email ou senha errados, tente novamente!" },
       });
+    });
+};
+
+export const deleteUser = (firebase, admin, user) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  const document = firebase.db.doc(`/users/${user.userId}`);
+  firebase.auth
+    .signInWithEmailAndPassword(user.email, user.password)
+    .then(() => {
+      return document.delete();
+    })
+    .then(() => {
+      return firebase.auth.currentUser.delete();
+    })
+    .then(() => {
+      return firebase.auth.signInWithEmailAndPassword(
+        admin.email,
+        admin.password
+      );
+    })
+    .then(() => {
+      alert("Utilizador deletado com sucesso!");
+      window.location.reload(false);
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };
 

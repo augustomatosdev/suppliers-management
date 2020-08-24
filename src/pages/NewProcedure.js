@@ -1,17 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddProcedure from "../components/forms/AddProcedure";
 import { withFirebase } from "../components/Firebase";
 import store from "../redux/store";
 import { postProcedure } from "../redux/actions/procedureActions";
+import { useSelector } from "react-redux";
 
 const NewProcedure = (props) => {
+  const error = useSelector((state) => state.UI.errors);
   const [state, setState] = useState({
     reference: "",
     description: "",
     objective: "",
     type: "",
     date: "",
+    error: {},
   });
+  useEffect(() => {
+    setState({
+      ...state,
+      error: error,
+    });
+  }, [error]);
   const handleChange = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };

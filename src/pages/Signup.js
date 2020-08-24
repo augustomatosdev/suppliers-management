@@ -3,8 +3,11 @@ import SignupForm from "../components/SignupForm";
 import store from "../redux/store";
 import { signupUser } from "../redux/actions/userActions";
 import { withFirebase } from "../components/Firebase";
+import { useSelector } from "react-redux";
 
 const Signup = (props) => {
+  const admin = useSelector((state) => state.user.credentials);
+
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -19,9 +22,12 @@ const Signup = (props) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    const adminCred = { email: admin.email, password: admin.password };
     const newUserData = state;
     delete newUserData.errors;
-    store.dispatch(signupUser(newUserData, props.firebase, props.history));
+    store.dispatch(
+      signupUser(newUserData, props.firebase, props.history, adminCred)
+    );
   };
 
   return (

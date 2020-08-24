@@ -14,27 +14,62 @@ export const postProcedure = (firebase, newProcedure, history) => (
   dispatch
 ) => {
   dispatch({ type: LOADING_UI });
-  firebase.db
-    .collection("procedures")
-    .add(newProcedure)
-    .then((doc) => {
-      const resProcedure = newProcedure;
-      resProcedure.procedureId = doc.id;
-      dispatch({
-        type: POST_PROCEDURE,
-        payload: resProcedure,
-      });
-      dispatch(clearErrors());
-      alert("Procedimento cadastrado com sucesso");
-      history.push(`/procedures`);
-    })
-    .catch((err) => {
-      console.log(err);
-      dispatch({
+  const proceduresRef = firebase.db.collection("procedures");
+  async function getRepeatedReferenceOrDescription() {
+    const isReference = proceduresRef
+      .where("reference", "==", newProcedure.reference)
+      .get();
+    const isDescription = proceduresRef
+      .where("description", "==", newProcedure.description)
+      .get();
+
+    const [
+      referenceQuerySnapshot,
+      descriptionQuerySnapshot,
+    ] = await Promise.all([isReference, isDescription]);
+
+    const descriptionArray = descriptionQuerySnapshot.docs;
+    const referenceArray = referenceQuerySnapshot.docs;
+
+    const repeatedArray = descriptionArray.concat(referenceArray);
+
+    return repeatedArray;
+  }
+
+  //We call the asychronous function
+  getRepeatedReferenceOrDescription().then((result) => {
+    console.log(result);
+    if (result.length > 0) {
+      return dispatch({
         type: SET_ERRORS,
-        payload: err,
+        payload: {
+          procedure:
+            "Numero de referencia ou despacho ja existe! Verifique e tente novamente.",
+        },
       });
-    });
+    }
+    firebase.db
+      .collection("procedures")
+      .add(newProcedure)
+      .then((doc) => {
+        const resProcedure = newProcedure;
+        resProcedure.procedureId = doc.id;
+        dispatch({
+          type: POST_PROCEDURE,
+          payload: resProcedure,
+        });
+        dispatch(clearErrors());
+        alert("Procedimento cadastrado com sucesso");
+        history.push(`/procedures`);
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({
+          type: SET_ERRORS,
+          payload: err,
+        });
+      });
+  });
 };
 
 export const getAllProcedures = (firebase) => (dispatch) => {

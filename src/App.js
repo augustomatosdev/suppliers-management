@@ -32,6 +32,7 @@ import Procedure from "./pages/Procedure";
 import EditSupplier from "./pages/EditSupplier";
 import EditProcedure from "./pages/EditProcedure";
 import Users from "./pages/Users";
+import FinancialYear from "./pages/FinancialYear";
 
 //MUi Theme settings
 const theme = createMuiTheme({
@@ -81,6 +82,11 @@ function App(props) {
       <BrowserRouter>
         <Switch>
           <UnAuthRoute exact path="/" component={Home} />
+          <UnAuthRoute
+            exact
+            path="/financial/:month"
+            component={FinancialYear}
+          />
           <UnAuthRoute exact path="/contracts" component={Contracts} />
           <UnAuthRoute exact path="/contracts/new" component={NewContract} />
           <UnAuthRoute

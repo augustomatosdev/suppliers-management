@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AddProcedure = ({ state, handleChange, handleSubmit }) => {
+  const loading = useSelector((state) => state.UI.loading);
+  const error = state.error;
+  console.log(error);
   return (
     <form onSubmit={handleSubmit}>
       <div className="field is-horizontal">
@@ -12,7 +16,7 @@ const AddProcedure = ({ state, handleChange, handleSubmit }) => {
           <div className="field">
             <div className="control">
               <input
-                className="input"
+                className={error.procedure ? "input is-danger" : "input"}
                 type="text"
                 placeholder="Número ou referência do procedimento"
                 name="reference"
@@ -33,7 +37,7 @@ const AddProcedure = ({ state, handleChange, handleSubmit }) => {
           <div className="field">
             <div className="control">
               <input
-                className="input"
+                className={error.procedure ? "input is-danger" : "input"}
                 type="text"
                 placeholder="Despacho do procedimento"
                 name="description"
@@ -42,6 +46,9 @@ const AddProcedure = ({ state, handleChange, handleSubmit }) => {
                 required
               />
             </div>
+            {error.procedure && (
+              <p className="help is-danger">{error.procedure}</p>
+            )}
           </div>
         </div>
       </div>
@@ -117,7 +124,13 @@ const AddProcedure = ({ state, handleChange, handleSubmit }) => {
         <div className="field-body">
           <div className="field is-grouped">
             <div className="control">
-              <button className="button is-warning">Cadastrar</button>
+              <button
+                className={
+                  loading ? "button is-warning is-loading" : "button is-warning"
+                }
+              >
+                Cadastrar
+              </button>
             </div>
             <Link to="/procedures" className="button is-danger">
               Cancelar

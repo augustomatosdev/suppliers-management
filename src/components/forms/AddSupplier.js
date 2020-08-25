@@ -11,6 +11,8 @@ const AddSupplier = ({
   handleAddress,
 }) => {
   const loading = useSelector((state) => state.UI.loading);
+  let error = useSelector((state) => state.UI.errors);
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -22,7 +24,7 @@ const AddSupplier = ({
             <div className="field">
               <div className="control">
                 <input
-                  className="input"
+                  className={error.supplier ? "input is-danger" : "input"}
                   type="text"
                   placeholder="Nome da empresa ou fornecedor"
                   name="name"
@@ -31,6 +33,9 @@ const AddSupplier = ({
                   required
                 />
               </div>
+              {error.supplier && (
+                <p className="help is-danger">{error.supplier}</p>
+              )}
             </div>
           </div>
         </div>

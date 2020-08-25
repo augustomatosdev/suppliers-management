@@ -20,9 +20,6 @@ const Products = (props) => {
     loaded: 0,
     modal: false,
   });
-  const userPermission = useSelector(
-    (state) => state.user.credentials.permission
-  );
 
   const loading = useSelector((state) => state.data.loading);
 
@@ -151,8 +148,8 @@ const Products = (props) => {
           {legislations.length > 0
             ? legislations.map((legis) => {
                 return (
-                  <>
-                    <div className="card" key={legis.legislationId}>
+                  <div key={legis.legislationId}>
+                    <div className="card">
                       <div className="card-content">
                         <div className="level is-mobile">
                           <div className="level-left">
@@ -192,7 +189,7 @@ const Products = (props) => {
                       </div>
                     </div>
                     <br />
-                  </>
+                  </div>
                 );
               })
             : !loading && (

@@ -10,6 +10,7 @@ const AddContract = ({
   handleFile,
 }) => {
   const loading = useSelector((state) => state.data.loading);
+  const error = useSelector((state) => state.UI.errors);
   const isDisabled =
     !state.supplier || !state.status || !state.selectedFile || state.loaded > 0;
   return (
@@ -23,7 +24,7 @@ const AddContract = ({
             <div className="control">
               <input
                 required
-                className="input"
+                className={error.contract ? "input is-danger" : "input"}
                 type="text"
                 placeholder="Numero ou referencia do contrato"
                 name="reference"
@@ -31,6 +32,9 @@ const AddContract = ({
                 onChange={handleChange}
               />
             </div>
+            {error.contract && (
+              <p className="help is-danger">{error.contract}</p>
+            )}
           </div>
         </div>
       </div>
@@ -187,6 +191,15 @@ const AddContract = ({
           </div>
         </div>
       </div>
+      {state.loaded > 0 && (
+        <progress
+          className="progress is-primary"
+          value={state.loaded}
+          max="100"
+        >
+          {state.loaded}%
+        </progress>
+      )}
       <div className="field is-horizontal">
         <div className="field-label">
           {/* <!-- Left empty for spacing --> */}

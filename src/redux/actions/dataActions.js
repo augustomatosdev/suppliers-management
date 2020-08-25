@@ -8,10 +8,8 @@ import {
   SET_SUPPLIER,
   SET_DOCUMENTS,
   SET_LEGISLATIONS,
-  LOADING_USER,
   LOADING_DATA,
   SET_USERS,
-  STOP_LOADING_DATA,
   STOP_LOADING_UI,
 } from "../types";
 
@@ -72,24 +70,39 @@ export const postSupplier = (firebase, newSupplier, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   firebase.db
     .collection("suppliers")
-    .add(newSupplier)
-    .then((doc) => {
-      const resSupplier = newSupplier;
-      resSupplier.supplierId = doc.id;
-      dispatch({
-        type: POST_SUPPLIER,
-        payload: resSupplier,
-      });
-      dispatch(clearErrors());
-      alert("Fornecedor cadastrado com sucesso");
-      history.push(`/suppliers`);
-    })
-    .catch((err) => {
-      console.log(err);
-      dispatch({
-        type: SET_ERRORS,
-        payload: err,
-      });
+    .where("name", "==", newSupplier.name)
+    .get()
+    .then((data) => {
+      if (data.empty) {
+        firebase.db
+          .collection("suppliers")
+          .add(newSupplier)
+          .then((doc) => {
+            const resSupplier = newSupplier;
+            resSupplier.supplierId = doc.id;
+            dispatch({
+              type: POST_SUPPLIER,
+              payload: resSupplier,
+            });
+            dispatch(clearErrors());
+            alert("Fornecedor cadastrado com sucesso");
+            history.push(`/suppliers`);
+          })
+          .catch((err) => {
+            console.log(err);
+            dispatch({
+              type: SET_ERRORS,
+              payload: err,
+            });
+          });
+      } else {
+        return dispatch({
+          type: SET_ERRORS,
+          payload: {
+            supplier: "Fornecedor ja existe! Verifique e tente novamente.",
+          },
+        });
+      }
     });
 };
 

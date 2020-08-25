@@ -19,9 +19,13 @@ import {
   STOP_LOADING_DATA,
   SET_AGREEMENTS,
   SET_AGREEMENT,
+  SET_FINANCIALYEARS,
+  SET_FINANCIALS,
 } from "../types";
 
 const initialState = {
+  financials: [],
+  financialYears: [],
   agreement: {},
   agreements: [],
   users: [],
@@ -160,6 +164,19 @@ export default function (state = initialState, action) {
       return {
         ...state,
         users: action.payload,
+        loading: false,
+      };
+
+    case SET_FINANCIALS:
+      return {
+        ...state,
+        financials: action.payload,
+        loading: false,
+      };
+    case SET_FINANCIALYEARS:
+      return {
+        ...state,
+        financialYears: action.payload,
         loading: false,
       };
 

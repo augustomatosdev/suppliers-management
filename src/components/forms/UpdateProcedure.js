@@ -106,7 +106,6 @@ const UpdateProcedure = ({ state, handleChange, handleSubmit }) => {
             <div className="control">
               <input
                 required
-                name="name"
                 className="input"
                 type="date"
                 name="date"

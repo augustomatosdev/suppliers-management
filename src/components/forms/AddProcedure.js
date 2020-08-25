@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 const AddProcedure = ({ state, handleChange, handleSubmit }) => {
   const loading = useSelector((state) => state.UI.loading);
   const error = state.error;
-  console.log(error);
   return (
     <form onSubmit={handleSubmit}>
       <div className="field is-horizontal">
@@ -106,7 +105,6 @@ const AddProcedure = ({ state, handleChange, handleSubmit }) => {
             <div className="control">
               <input
                 required
-                name="name"
                 className="input"
                 type="date"
                 name="date"

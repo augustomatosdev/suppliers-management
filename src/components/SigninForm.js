@@ -21,7 +21,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        Departamento Provincial da Contratação Pública do Cuanza Sul
+        Departamento da Contratação Pública do Governo Provincial Cuanza Sul
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}

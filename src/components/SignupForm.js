@@ -19,7 +19,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        Departamento Provincial de Contratação Pública do Cuanza Sul
+        Departamento da Contratação Pública do Governo Provincial Cuanza Sul
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -63,7 +63,7 @@ export default function SignupForm({ state, handleChange, handleSubmit }) {
           <img style={{ maxHeight: "100%" }} src={Logo} />
         </figure>
         <h1 className="subtitle has-text-centered is-size-7 is-marginless">
-          DEPARTAMENTO DE CONTRATAÇÃO PÚBLICA DO GOVERNO PROVINCIAL DO CUANZA
+          DEPARTAMENTO DA CONTRATAÇÃO PÚBLICA DO GOVERNO PROVINCIAL DO CUANZA
           SUL
         </h1>
 
